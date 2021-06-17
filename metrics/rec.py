@@ -42,7 +42,7 @@ class REC:
             re = cm.tp / (cm.tp + cm.fn) if cm.tp + cm.fn > 0 else 0
         elif isinstance(cm, CMGeneralized):
             if average.endswith('micro'):
-                tp = cm.get_total_tp()  # todo: get_total_tp was changed to get_total_t as its implementations was wrong!
+                tp = cm.get_total_t()
                 fn = cm.get_total_fn()
                 re = tp / (tp + fn) if tp + fn > 0 else 0
             elif average.endswith('macro'):

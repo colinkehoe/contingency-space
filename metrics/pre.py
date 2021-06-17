@@ -42,7 +42,7 @@ class PRE:
             pr = cm.tp / (cm.tp + cm.fp) if cm.tp + cm.fp > 0 else 0
         elif isinstance(cm, CMGeneralized):
             if average.endswith('micro'):
-                tp = cm.get_total_tp()  # todo: get_total_tp was changed to get_total_t as its implementations was wrong!
+                tp = cm.get_total_t()
                 fp = cm.get_total_fp()
                 pr = tp / (tp + fp) if tp + fp > 0 else 0
             elif average.endswith('macro'):

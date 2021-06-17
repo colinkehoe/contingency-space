@@ -109,7 +109,7 @@ class TauW:
         """
         if all(weights == np.array([1, 1, 1])):
             return np.linalg.norm(self.model_point - self.perfect_point)
-        else:  # TODO: the above statement is redundant
+        else:
             x0, y0 = self.model_point
             x1, y1 = self.perfect_point
             d = np.sqrt(np.power(y0 - y1, 2) * weights[0] +
@@ -131,41 +131,3 @@ class TauW:
         else:
             tau = self.dist_from_perfect
         return tau
-
-
-def main():
-    import numpy as np
-    from utils.cm_generator import CMGenerator
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-
-    gen = CMGenerator(n_p=100, n_n=5000, n_cm=101)
-    gen.generate_cms()
-
-    all_tauw = []
-    for cm in gen.all_cms:
-        tauw = TauW(cm, weights=np.array([1.0, 1.0, 1.0]))
-        all_tauw.append(tauw.dist_from_perfect)
-
-    tauw_mat = np.array(all_tauw[::-1]).reshape((101, 101))
-    tauw_mat = np.flip(tauw_mat, 1)
-
-    tauw_labs = (np.asarray(['{}'.format(np.round(t, 1)) for t in all_tauw[::-1]])).reshape(101, 101)
-    tauw_labs = np.flip(tauw_labs, 1)
-
-    fig, ax = plt.subplots(figsize=(6, 5))
-
-    x_labels = ['{}'.format(np.round(l, 1)) for l in np.arange(0.0, 1.1, 0.1)]
-    y_labels = ['{}'.format(np.round(l, 1)) for l in np.arange(1.0, -0.1, -0.1)]
-    sns.heatmap(tauw_mat, fmt="", cmap='RdYlGn', linewidths=0.0, ax=ax)  # , annot=tauw_labs
-    plt.xticks([])
-    plt.yticks([])
-    plt.title('Heatmap of TauW (Weighted) for 121 Different Models')
-    plt.xlabel('|---------------TN---------------||---------------FP---------------|')
-    plt.ylabel('|---------------TP---------------||---------------FN---------------|')
-    plt.show()
-    # plt.savefig('../plots/imbalanced/Tauw_heatmap_100_5000.svg')
-
-
-if __name__ == "__main__":
-    main()
