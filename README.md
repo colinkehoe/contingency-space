@@ -1,29 +1,27 @@
-# README #
+# Contingency Space #
 
-This README would normally document whatever steps are necessary to get your application up and running.
 
-### What is this repository for? ###
+### Abstract.
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+In Machine Learning, a supervised model's performance is measured
+using the verification metrics. In this study, we first present
+our motivation by revisiting the major limitations of these metrics,
+namely one-dimensionality, lack of context, lack of intuitiveness,
+uncomparability, binary restriction, and uncustomizability of
+metrics. In response, we propose Contingency Space, a bounded
+semimetric space that provides a generic representation for any
+performance verification metric. Then we showcase how this space
+addresses the limitations. In this space, each metric forms a
+surface using which we visually compare different verification
+metrics. Taking advantage of the fact that a metric's surface
+warps proportional to the degree of which it is sensitive to
+the class-imbalance ratio of data, we introduce Imbalance
+Sensitivity that quantifies the skew-sensitivity. Since an
+arbitrary model is represented in this space by a single point, we
+introduce Learning Path for qualitative and quantitative analyses
+of the training process. Using the semimetric that contingency
+space is endowed with, we introduce Tau as a new cost sensitive
+and Imbalance Agnostic metric. Lastly, we show that contingency
+space addresses multi-class problems as well. Throughout this work
+we define each concept through stipulated definitions and present
+every application with practical examples and visualizations.
