@@ -25,3 +25,20 @@ and Imbalance Agnostic metric. Lastly, we show that contingency
 space addresses multi-class problems as well. Throughout this work
 we define each concept through stipulated definitions and present
 every application with practical examples and visualizations.
+
+### How To Use.
+
+* Use the notebooks under [./notebooks/](./notebooks/) to explore some of
+the main functionalities.
+  
+* All metrics are available under [./metrics/](./metrics/).
+
+* One of the notebooks ([./notebooks/cnn_learning_path_on_MNIST.ipynb](./notebooks/cnn_learning_path_on_MNIST.ipynb))
+requires the data of the learning paths. The data is pickled and
+  available under [./pickled_data/](./pickled_data/).
+  
+
+### Metadata.
+* Python 3.8
+* Tested on Ubuntu 20.04.2 LTS
+* Utilized libraries are listed in [./requirements.txt](./requirements.txt).
