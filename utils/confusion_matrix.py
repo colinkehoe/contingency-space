@@ -12,13 +12,13 @@ class CM:
         :param table: a dictionary with 4 keys (tp, fn, tn, fp) and their corresponding
         values representing a confusion matrix.
         """
-        self.table = table
-        self.tp = table['tp']
-        self.fn = table['fn']
-        self.tn = table['tn']
-        self.fp = table['fp']
-        self.n = self.tn + self.fp
-        self.p = self.tp + self.fn
+        self.table = table #the matrix with all 4 values
+        self.tp = table['tp'] #true positives
+        self.fn = table['fn'] #false negatives
+        self.tn = table['tn'] #true negatives
+        self.fp = table['fp'] #false positives
+        self.n = self.tn + self.fp #all negatives
+        self.p = self.tp + self.fn #all positives
 
     def normalize(self):
         """
