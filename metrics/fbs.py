@@ -1,9 +1,9 @@
 import copy
 import numpy as np
 from utils.confusion_matrix import CM
+from utils.confusion_matrix_generalized import CMGeneralized
 from metrics.pre import PRE
 from metrics.rec import REC
-from utils.confusion_matrix_generalized import CMGeneralized
 
 # Ref:
 #   1. https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-and-recall-9250280bddc2

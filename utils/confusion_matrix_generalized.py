@@ -7,7 +7,7 @@ class CMGeneralized:
     """
     Confusion matrix class for multi-class problems.
     """
-    def __init__(self, table: dict):
+    def __init__(self, table: dict[str, list[int]]):
         """
         The class constructor.
 
@@ -32,7 +32,10 @@ class CMGeneralized:
         :param table: a dictionary with all class names as keys and their corresponding frequencies
         as values.
         """
+        
+        
         self.table = copy.deepcopy(table)
+        self.num_classes = len(self.table)
         self.class_freqs = {}
         for k, v in table.items():
             self.class_freqs.update({k: int(np.sum(np.array(v)))})
@@ -50,42 +53,96 @@ class CMGeneralized:
             cm_normalized.update({k: norm_freqs})
         self.__init__(cm_normalized)
 
-    def get_total_t(self):
+    def get_total_true(self):
         """
         :return: sum of the counts on the diagonal of the table.
         """
         a = np.array(list(self.table.values()))
         return np.sum(a.diagonal())
 
-    def get_total_fp(self):
+    def get_false_predictions(self, cls: str = None) -> int:
         """
-        For each class i, FP is the sum of the counts in column i, except the one on the diagonal.
+        For each class i, FP is the sum of the counts in column i, except the one on the diagonal. 
+        For binary classification, this will return the number of false positives in the matrix.
 
-        :return: column-wise sum of counts excluding the values on diagonal.
-        """
-        a = np.array(list(self.table.values()))
-        diag = a.diagonal()
-        return np.sum(np.sum(a, axis=0) - diag)
+        Args:
+            cls (str, optional): The class for which you wish to find the number of false positives. If left blank, this function will return the total number of false predictions. Defaults to None.
 
-    def get_total_fn(self):
+        Returns:
+            int: column-wise sum of counts excluding the values on diagonal.
         """
-        For each class i, FP is the sum of the counts in row i, except the one on the diagonal.
+        
+        
+        matrix = np.array(list(self.table.values()))
+        keys = list(self.table.keys())
+        
+        diagonal_mask = np.eye(len(matrix), dtype=bool) #create a mask for the diagonal of the matrix.
+        
+        if cls is None:
+            
+            #return the sum of all values in the matrix, except for the diagonal.
+            return matrix[~diagonal_mask].sum()
+        else:
+            try:
+                column_index = keys.index(cls)
+            except:
+                raise ValueError(f'The class {cls} was not found in this matrix.')
+            
+            
+            #return the sum of all values in the matrix, except for the diagonal.
+            return matrix[:, column_index][~diagonal_mask[:, column_index]].sum()
+            
+    def get_missed_predictions(self, cls: str = None):
+        """
+        Returns the sum of all missed predictions for a given class. 
+        
+        For binary classification, this will return the number of false negatives in the matrix.
 
-        :return: row-wise sum of counts excluding the values on diagonal.
+        Args:
+            cls (str, optional): The class you wish to get the number of missed predictions for. Defaults to None.
         """
-        a = np.array(list(self.table.values()))
-        diag = a.diagonal()
-        return np.sum(np.sum(a, axis=1) - diag)
+        
+        matrix = np.array(list(self.table.values()))
+        keys = list(self.table.keys())
+        
+        #create a diagonal mask for the matrix
+        diagonal_mask = np.eye(len(matrix), dtype=bool)
+        
+        if cls is None:
+            
+            #return sum of all values outside of the diagonal
+            return matrix[~diagonal_mask].sum()
+        else:
+            try:
+                row_index = keys.index(cls)
+            except:
+                raise ValueError(f'The class {cls} was not found in this matrix.')
+                
+            #return sum of all values within the row, excluding the diagonal
+            return matrix[row_index, :][~diagonal_mask[row_index, :]].sum()
 
     def get_matrix(self):
         return np.array(list(self.table.values()))
+
+    def tuple(self) -> tuple[int, ...]:
+        """Returns a tuple representing the position of the confusion matrix within a contingency space. 
+
+        Returns:
+            c tuple[int, ...]: The tuple taking the form (x1, x2, ..., xk), where k is the number of classes.
+        """
+        
+        position = []
+        cm = np.array(list(self.table.values()))
+        
+        total_real = np.sum(cm, axis=0) #the total # of times the model predicted each class.
+        true_pred = cm.diagonal() #the list of # of times the model predicted each class correctly.
+        
+        for real, pred in zip(total_real, true_pred): #create each coordinate
+            position.append(pred / real)
+        
+        return tuple(position)
     
-    def tuple(self):
-        #implement behavior converting the matrix to the tuple (x1, x2, ... , xk) where k is # of classes
-        #potentially implement returning the vector <x1, 1-x1, r2*x2, r2(1-x2),..., rk*xk, rk(1-xk)>
-        return
-    
-    def num_classes(self) -> int:
+    def get_num_classes(self) -> int:
         """Returns the number of classes.
 
         Returns:
@@ -100,3 +157,10 @@ class CMGeneralized:
         df.index = self.table.keys()
         return str(df)
 
+if __name__ == "__main__":
+    gen = CMGeneralized({'a': [3, 1, 2, 3],
+                         'b': [2, 5, 1, 1],
+                         'c': [3, 3, 5, 2],
+                         'd': [2, 1, 2, 4]})
+    
+    print(gen.get_missed_predictions())
