@@ -1,29 +1,17 @@
 import copy
 import pandas as pd
 import numpy as np
-from confusion_matrix_generalized import CMGeneralized
-from confusion_matrix import CM
+from utils.confusion_matrix_generalized import CMGeneralized
+from utils.confusion_matrix import CM
 from enum import Enum
+
+from metrics import *
 
 #visualize the contingency space:
 #https://dmlab.cs.gsu.edu/metrics/contingency/
 
-class Metrics(Enum):
-    acc = 1
-    ba = 2
-    gm = 3
-    pre = 4
-    rec = 5
-    f1 = 6
-    gss =  7
-    dss = 8
-    tss = 9
-    hss = 10
-    j = 11
-    tau = 12
 
-
-def imbalance_score(metric: str | Metrics, imbalance_ratio: list[int]):
+def imbalance_score(metric: type, imbalance_ratio: list[int]):
     """Return a value between 0 and 1 representing the sensitivity to class imbalance.
     Closer to 1 means more sensitivity, closer to 0 means less.
     
@@ -35,30 +23,6 @@ def imbalance_score(metric: str | Metrics, imbalance_ratio: list[int]):
         
     if type(metric) == str:
         metric = Metrics[metric]
-        
-    match metric:
-        case Metrics.acc:
-            #handle case
-            return
-        case Metrics.ba:
-            #handle case
-            return
-        case Metrics.gm:
-            return
-        case Metrics.pre:
-            return
-        case Metrics.rec:
-            return
-        case Metrics.f1:
-            return
-        case Metrics.gss:
-            return
-        case Metrics.dss:
-            return
-        case Metrics.tss:
-            return
-        case Metrics.hss:
-            return
         
     return metric
 
@@ -125,25 +89,90 @@ class ContingencySpace:
         
         return self.matrices[str(key)]
     
-    
-    def learning_path_length_2D(self, points: tuple[str | int, str | int]=None):
-        """Calculate the learning path between the first and last points given.
+    def learning_path_length_2D(self, points: tuple[str, str]) -> float:
+        """Calculate the learning path between the first and last points given. Only works for binary classification problems.
+        
+        Args:
+            points (tuple): a tuple consisting of two keys that correspond to CMs within the contingency space.
+            
+        Returns:
+            float: the length of the learning path from the first point to the last.
         """
         
+        keys = list(self.matrices.keys())
+        
+        #get the keys for the user-provided matrices.
+        (first, last) = points
+        
+        #convert the keys to an index representing their location within the space.
+        first_matrix_index = keys.index(first)
+        last_matrix_index = keys.index(last)
+        
+        #total distance traveled.
+        distance_traveled = 0
+        
+        previous_key = keys[first_matrix_index]
         
         
-        return
+        for key in keys[first_matrix_index + 1 : last_matrix_index+1]:
+            
+            #get the first coordinates
+            (previous_x, previous_y) = self.matrices[previous_key].positive_rates()
+            #get the coordinates of the previous point.
+            (current_x, current_y) = self.matrices[key].positive_rates()
+            
+            #calculate the distance from the previous point to the current point.
+            d = np.sqrt((current_x - previous_x)**2 + (current_y - previous_y)**2)
+            
+            distance_traveled += d
+            previous_key = key
+        
+        return distance_traveled
     
-    def learning_path_length_3D(self, points: tuple[int, int]=None):
+    def learning_path_length_3D(self, points: tuple[str, str], metric: type=ACC) -> float:
         """Calculate the learning path between the first and last 
 
         Args:
-            points (_type_, optional): _description_. Defaults to None.
+            points (tuple[str, str]): The points you wish to calculate the learning path between. Defaults to None.
+            metric (MetricType, optional): The metric you wish to assess the model with. Defaults to Accuracy.
+        
+        Returns:
+            float: The distance between the first point given and the last point given across the contingency space.
         """
         
-        return
+        keys = list(self.matrices.keys())
+        
+        #get the keys for the user-provided matrices.
+        (first, last) = points
+        
+        #convert the keys to an index representing their location within the space.
+        first_matrix_index = keys.index(first)
+        last_matrix_index = keys.index(last)
+        
+        #total distance traveled.
+        distance_traveled = 0
+        
+        previous_key = keys[first_matrix_index]
+        
+        for key in keys[first_matrix_index + 1 : last_matrix_index+1]:
+            
+            #get the first coordinates
+            (previous_x, previous_y) = self.matrices[previous_key].positive_rates(return_type=tuple)
+            previous_z = metric(self.matrices[previous_key]).value
+            
+            #get the coordinates of the next point.
+            (current_x, current_y) = self.matrices[key].positive_rates()
+            current_z = metric(self.matrices[key]).value
+            
+            #calculate the distance from the previous point to the current point.
+            d = np.sqrt((current_x - previous_x)**2 + (current_y - previous_y)**2 + (current_z - previous_z)**2)
+        
+            distance_traveled += d
+            previous_key = key
+        
+        return distance_traveled
     
-    def __init__(self, metric: str, matrices: dict[str, CMGeneralized] | list[CMGeneralized] = None):
+    def __init__(self, matrices: dict[str, CMGeneralized] | list[CMGeneralized] = None):
         """
         
         The constructor for the contingency space.
@@ -172,17 +201,14 @@ class ContingencySpace:
             
 if __name__ == "__main__":
     p, n = 2500, 2500
-    gen = ContingencySpace([CMGeneralized({'a': [24, 23, 23],
-                                           'b': [24, 33, 22],
-                                           'c': [14, 23, 12]}),
-                            CMGeneralized({'a': [24, 23, 23],
-                                           'b': [24, 33, 22],
-                                           'c': [14, 23, 12]}),
-                            CMGeneralized({'a': [24, 23, 23],
-                                           'b': [24, 33, 22],
-                                           'c': [14, 23, 12]})])
+    gen = ContingencySpace({'1': CMGeneralized({'t': [5, 5],
+                                                'f': [5, 5]}),
+                            '2': CMGeneralized({'t': [7, 4],
+                                                'f': [3, 6]}),
+                            '3': CMGeneralized({'t': [7, 1],
+                                                'f': [3, 9]}),
+                            '4': CMGeneralized({'t': [10, 0],
+                                                'f': [0, 10]})
+                        })
     
-    
-    gen.show_history()
-    
-    print(ContingencySpace.imbalance_score('tau', [2, 2]))
+    print(gen.learning_path_length_2D(('1', '4')))
