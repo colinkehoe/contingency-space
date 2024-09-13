@@ -74,7 +74,7 @@ class CMGenerator:
                 )
     
     
-    def generate_cms_new(self, granularity: int) -> list[CMGeneralized]:
+    def generate_cms(self, granularity: int) -> list[CMGeneralized]:
         """Generates a series of confusion matrices.
 
         Args:
@@ -143,7 +143,7 @@ if __name__ == "__main__":
     #p, n = 2500, 2500
     #gen = CMGenerator(n_p=p, n_n=n, n_cm=6)
     gen = CMGenerator(3, 600, {'a': 200, 'b': 200, 'c': 200})
-    gen.generate_cms_new(10)
+    gen.generate_cms(10)
     # n_ps = np.arange(100, 2501, 300)[::-1]
     # n_ns = np.asarray(5000 - n_ps)
     # cm_collection = []  # [[CM, ...], ...]
