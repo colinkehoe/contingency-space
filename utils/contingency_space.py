@@ -90,7 +90,7 @@ class ContingencySpace:
         return self.matrices[str(key)]
     
     def learning_path_length_2D(self, points: tuple[str, str]) -> float:
-        """Calculate the learning path between the first and last points given. Only works for binary classification problems.
+        """Calculate the learning path between the first and last points given. Currently only works for binary classification problems.
         
         Args:
             points (tuple): a tuple consisting of two keys that correspond to CMs within the contingency space.
@@ -130,14 +130,14 @@ class ContingencySpace:
         return distance_traveled
     
     def learning_path_length_3D(self, points: tuple[str, str], metric: type=ACC) -> float:
-        """Calculate the learning path between the first and last 
+        """Calculate the learning path between the first and last points given, using an accuracy metric to determine a third dimension. Currently only works for binary classification problems. 
 
         Args:
             points (tuple[str, str]): The points you wish to calculate the learning path between. Defaults to None.
             metric (MetricType, optional): The metric you wish to assess the model with. Defaults to Accuracy.
         
         Returns:
-            float: The distance between the first point given and the last point given across the contingency space.
+            float : The distance between the first point given and the last point given across the contingency space.
         """
         
         keys = list(self.matrices.keys())
@@ -187,6 +187,7 @@ class ContingencySpace:
         """
         
         #If the user has passed in matrices, copy them to the object. Otherwise, initialize an empty dictionary.
+        
         if not matrices:
             self.matrices = {}
         else:
@@ -210,5 +211,3 @@ if __name__ == "__main__":
                             '4': CMGeneralized({'t': [10, 0],
                                                 'f': [0, 10]})
                         })
-    
-    print(gen.learning_path_length_2D(('1', '4')))

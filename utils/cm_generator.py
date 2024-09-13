@@ -1,7 +1,10 @@
 import numpy as np
-from confusion_matrix import CM
-from confusion_matrix_generalized import CMGeneralized
+from utils.confusion_matrix import CM
+from utils.confusion_matrix_generalized import CMGeneralized
 import random
+import itertools
+import metrics
+import math
 
 
 def _verify_cm(trues, falses, expected_sum):
@@ -20,7 +23,7 @@ class CMGenerator:
 
     #change to take any # of classes
     #change to take an imbalance ratio
-    def __init__(self, n_p, n_n, n_cm):
+    def old_constructor(self, n_p, n_n, n_cm):
         """
 
         :param n_p: number of positive instances
@@ -32,19 +35,22 @@ class CMGenerator:
         self.n_n = n_n
         self.all_cms = []
         
-    def new_constructor(self, num_classes: int, num_instances: int, num_instances_perclass: list) -> None:
-        """_summary_
+    def __init__(self, num_classes: int, num_instances: int, instances_per_class: dict[str, int], metric=metrics.ACC):
+        """Create an object capable of generating Confusion Matrices using the parameters given.
 
         Args:
             num_classes (int): The number of classes.
-            num_instances (int): The total number of predictions made by the model.
-            num_instances_perclass (list): A list containing the number of times the model predicted each class.
+            num_instances (int): The total number of predictions made by each model.
+            instances_per_class (list): The number of instances of each class.
         """
         
-        self.n_classes = num_classes
-        self.n_instances = num_instances
-        self.n_perclass = num_instances_perclass
-        self.all_cms = []
+        self.num_classes: int = num_classes
+        self.n_instances: int = num_instances
+        self.n_per_class: dict[str, int] = instances_per_class
+        self.all_cms: list[CMGeneralized] = []
+        
+        if sum(instances_per_class.values()) != num_instances:
+            raise ValueError('The sum of all instances per class must be equal to the total number of instances.')
         
         #We could either use lists, or have num_instances_perclass be a dict instead, with the class names as keys.      
         return
@@ -66,39 +72,62 @@ class CMGenerator:
                         'tn': all_tn[j],
                         'fp': all_fp[j]})
                 )
+    
+    
+    def generate_cms_new(self, granularity: int) -> list[CMGeneralized]:
+        """Generates a series of confusion matrices.
 
-    def generate_cms(self):
-        #adapt for multi-class. (use CMGeneralized)
-        
-        all_tpr = np.linspace(0, 1.0, self.n_cm)
-        all_tnr = np.linspace(0, 1.0, self.n_cm)
-        for tpr in all_tpr:
-            for tnr in all_tnr:
-                self.all_cms.append(
-                    
-                    #Change this
-                    #vvvvvvvvv
-                    CM({'tp': self.n_p * tpr,
-                        'fn': self.n_p * (1 - tpr),
-                        'tn': self.n_n * tnr,
-                        'fp': self.n_n * (1 - tnr)})
-                )
-                
-    def generate_cms_new(self):
-        #number of classes important
-        #written by Colin
-        
-        #    {'a': [ta, fb, fc],
-        #     'b': [fa, tb, fc],
-        #     'c': [fa, fb, tc]}
-        
-        #generate n^2 integers whose sum is self.num_instances. distribute those numbers accordingly.
-        
-        spread = random.sample(range(0, 2500), self.num_classes**2)
-        if sum(spread) == self.num_instances:
-            self.all_cms.append()
+        Args:
+            granularity (int): The number of values you wish to have on each axis. 
             
-        return
+        Returns:
+            (list[CMGeneralized]): The matrices generated. These can also by accessed by calling show_all_cms().
+        """
+        
+        all_rates: dict[str, list] = {}
+        
+        for cls in self.n_per_class.keys():
+            all_rates.update({cls: np.linspace(0, self.n_per_class[cls], granularity, dtype=int)})
+            
+        lists: list[list[int]] = all_rates.values()
+        
+        combinations = list(itertools.product(*lists))
+        
+        keys = all_rates.keys()
+        
+        combinations_with_keys = [dict(zip(keys, comb)) for comb in combinations]
+        
+        
+            
+        for comb in combinations_with_keys:
+            
+            
+            matrix = CMGeneralized()
+            
+            
+            for i, (cls, hits) in enumerate(comb.items()):
+                
+                row = []
+                
+                for j in range(self.num_classes):
+                    
+                    
+                    if i == j:
+                        
+                        row.append(int(hits))
+                        continue
+                    
+                    row.append((int(math.ceil((self.n_per_class[cls] - hits) / (self.num_classes - 1)))))
+                    
+                matrix.add_class(cls, row)
+                
+                
+                
+            print("\n")
+            print(matrix.array())
+            self.all_cms.append(matrix)
+        
+        return self.all_cms
 
     def show_all_cms(self, limit: int = None):
         limit = len(self.all_cms) if limit is None else limit
@@ -109,13 +138,12 @@ class CMGenerator:
             i += 1
 
 
+
 if __name__ == "__main__":
-    p, n = 2500, 2500
-    gen = CMGenerator(n_p=p, n_n=n, n_cm=6)
-    gen.generate_cms()
-    print(len(gen.all_cms))
-    for cm in gen.all_cms:
-        print(cm)
+    #p, n = 2500, 2500
+    #gen = CMGenerator(n_p=p, n_n=n, n_cm=6)
+    gen = CMGenerator(3, 600, {'a': 200, 'b': 200, 'c': 200})
+    gen.generate_cms_new(10)
     # n_ps = np.arange(100, 2501, 300)[::-1]
     # n_ns = np.asarray(5000 - n_ps)
     # cm_collection = []  # [[CM, ...], ...]

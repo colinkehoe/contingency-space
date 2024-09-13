@@ -7,7 +7,7 @@ class CMGeneralized:
     """
     Confusion matrix class for multi-class problems.
     """
-    def __init__(self, table: dict[str, list[int]]):
+    def __init__(self, table: dict[str, list[int]]={}):
         """
         The class constructor.
 
@@ -41,6 +41,16 @@ class CMGeneralized:
             self.class_freqs.update({k: int(np.sum(np.array(v)))})
         self.dim = len(self.class_freqs.keys())
 
+    def add_class(self, cls: str, values: list[int]) -> None:
+        """Adds a row to the table. Do not use this function unless you are building
+        a matrix from scratch.
+
+        Args:
+            cls (str): The name of the class being added.
+            values (list[int]): Values of the row.
+        """
+        self.table.update({cls: values})
+        
     def normalize(self):
         """
         normalizes all entries of the confusion matrix.
@@ -183,9 +193,7 @@ class CMGeneralized:
         return str(df)
 
 if __name__ == "__main__":
-    gen = CMGeneralized({'a': [3, 1, 2, 3],
-                         'b': [2, 5, 1, 1],
-                         'c': [3, 3, 5, 2],
-                         'd': [2, 1, 2, 4]})
+    gen = CMGeneralized({'t': [50, 50],
+                         'f': [50, 50]})
     
     print(gen.positive_rates(return_type=list))
