@@ -35,7 +35,7 @@ class CMGenerator:
         self.n_n = n_n
         self.all_cms = []
         
-    def __init__(self, num_classes: int, num_instances: int, instances_per_class: dict[str, int], metric=metrics.ACC):
+    def __init__(self, num_classes: int, num_instances: int, instances_per_class: dict[str, int]):
         """Create an object capable of generating Confusion Matrices using the parameters given.
 
         Args:
@@ -72,8 +72,6 @@ class CMGenerator:
                         'tn': all_tn[j],
                         'fp': all_fp[j]})
                 )
-    
-    
     def generate_cms(self, granularity: int) -> list[CMGeneralized]:
         """Generates a series of confusion matrices.
 
@@ -83,48 +81,44 @@ class CMGenerator:
         Returns:
             (list[CMGeneralized]): The matrices generated. These can also by accessed by calling show_all_cms().
         """
-        
+
+
+        #Generate every rate possible for each class.
         all_rates: dict[str, list] = {}
-        
         for cls in self.n_per_class.keys():
             all_rates.update({cls: np.linspace(0, self.n_per_class[cls], granularity, dtype=int)})
             
+        #grab the values and make a list of every possible combination of the rates.
         lists: list[list[int]] = all_rates.values()
-        
         combinations = list(itertools.product(*lists))
         
+        #zip the combinations back up with their keys. 
         keys = all_rates.keys()
-        
         combinations_with_keys = [dict(zip(keys, comb)) for comb in combinations]
         
         
-            
+        #generate every possible matrix
         for comb in combinations_with_keys:
-            
-            
             matrix = CMGeneralized()
             
-            
+            #generate each row and insert it into the matrix
             for i, (cls, hits) in enumerate(comb.items()):
-                
                 row = []
                 
                 for j in range(self.num_classes):
                     
-                    
+                    #if the loop is on the diagonal, append the number of successful hits.
                     if i == j:
-                        
                         row.append(int(hits))
                         continue
                     
+                    #otherwise, evenly spread the instances across the other cells.
                     row.append((int(math.ceil((self.n_per_class[cls] - hits) / (self.num_classes - 1)))))
                     
                 matrix.add_class(cls, row)
                 
                 
                 
-            print("\n")
-            print(matrix.array())
             self.all_cms.append(matrix)
         
         return self.all_cms
@@ -143,7 +137,9 @@ if __name__ == "__main__":
     #p, n = 2500, 2500
     #gen = CMGenerator(n_p=p, n_n=n, n_cm=6)
     gen = CMGenerator(3, 600, {'a': 200, 'b': 200, 'c': 200})
-    gen.generate_cms(10)
+    gen.generate_cms(3)
+    
+    
     # n_ps = np.arange(100, 2501, 300)[::-1]
     # n_ns = np.asarray(5000 - n_ps)
     # cm_collection = []  # [[CM, ...], ...]
