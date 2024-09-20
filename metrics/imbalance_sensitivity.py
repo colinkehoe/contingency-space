@@ -15,7 +15,7 @@ def calculate_scores(matrices: list[CMGeneralized], metric: Callable[[CMGenerali
         all_scores.append(m)
     return all_scores
 
-def imbalance_sensitivity(imbalance: float | int | str, metric: Callable[[CMGeneralized], float], granularity: int = 15) -> float:
+def imbalance_sensitivity(imbalance: float | int | str | tuple[int, int], metric: Callable[[CMGeneralized], float], granularity: int = 15) -> float:
     """Calculates the sensitivity of a given metric to a given imbalance ratio. 
 
     Args:
@@ -35,9 +35,11 @@ def imbalance_sensitivity(imbalance: float | int | str, metric: Callable[[CMGene
     
     #parse out the imbalance ratio
     match imbalance:
+        #case they passed only the denom
         case int():
             numerator = 1
             denominator = imbalance
+        #parse the num and denom from the decimal
         case float():
             decimal_part = str(imbalance).split('.')[1]
             
@@ -48,18 +50,29 @@ def imbalance_sensitivity(imbalance: float | int | str, metric: Callable[[CMGene
             
             numerator = int(first_half) if first_half else 1
             denominator = int(second_half) if second_half else 1
+        #parse num and denom from string
         case str():
             parts = imbalance.split(':')
             
-            numerator = int(parts[0])
-            denominator = int(parts[1])
+            try:
+                numerator = int(parts[0])
+                denominator = int(parts[1])
+            except:
+                raise ValueError("Numerator and denominator must be uninterrupted integers.")
+        case tuple():
+            if len(imbalance) > 2:
+                raise ValueError("Ratio must only contain two values")
+            
+            (numerator, denominator) = imbalance
+            
+            if not isinstance(numerator, int) or not isinstance(denominator, int):
+                raise TypeError('Values in tuple must be of type int.')
         case _:
-            raise TypeError("Valid types for imbalance ratio are int or float")
+            raise TypeError("Check valid types for imbalance ratio")
         
     power: int = 0
     
-    print(f'numerator: {numerator} | denominator: {denominator}')
-    
+    #ensure the parts of the ratio are of suitable size for the calculation
     while numerator < 1000 or not (numerator.is_integer() and denominator.is_integer()):
         numerator *= 10
         denominator *= 10
@@ -91,7 +104,7 @@ def imbalance_sensitivity(imbalance: float | int | str, metric: Callable[[CMGene
     return np.sum(np.abs(differences)) / pow(granularity, num_classes)
 
 
-#some basic functions already designed
+#some basic metric functions
 def accuracy(cm: CMGeneralized) -> float:
     matrix = cm.array()
     true_values = np.sum(matrix.diagonal())
@@ -106,6 +119,6 @@ def balanced_accuracy(cm: CMGeneralized) -> float:
     
     return (tpr + tnr) / 2
 if __name__ == "__main__":
-    one_four = imbalance_sensitivity(64, accuracy)
+    one_four = imbalance_sensitivity(4, accuracy)
 
     print(f'1 : 4 -> {one_four}')
