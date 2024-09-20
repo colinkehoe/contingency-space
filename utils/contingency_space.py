@@ -10,22 +10,6 @@ from metrics import *
 #visualize the contingency space:
 #https://dmlab.cs.gsu.edu/metrics/contingency/
 
-
-def imbalance_score(metric: type, imbalance_ratio: list[int]):
-    """Return a value between 0 and 1 representing the sensitivity to class imbalance.
-    Closer to 1 means more sensitivity, closer to 0 means less.
-    
-    Args:
-        metric (str | Metrics):      The metric you wish to calculate the imbalance ratio for.
-        imbalance_ratio (list[int]): The class imbalance ratios you wish to calculate for.
-    
-    """
-        
-    if type(metric) == str:
-        metric = Metrics[metric]
-        
-    return metric
-
 class ContingencySpace:
     """ 
     An implementation of the Contingency Space.

@@ -57,6 +57,8 @@ class CMGeneralized:
 
         :return: None.
         """
+        
+        
         cm_normalized = {}
         for k, freqs in self.table.items():
             norm_freqs = [e / self.class_freqs[k] if self.class_freqs[k] != 0 else 0 for e in freqs]
@@ -71,7 +73,7 @@ class CMGeneralized:
         a = np.array(list(self.table.values()))
         return np.sum(a.diagonal())
 
-    def get_false_predictions(self, cls: str = None) -> list[int] | int:
+    def get_false_predictions(self, cls: str = None) -> dict[str, int] | int:
         """
         For each class i, the total amount of false predictions is the sum of the counts in column i, except the one on the diagonal. 
         For binary classification, this will return the number of false positives in the matrix.
@@ -97,7 +99,11 @@ class CMGeneralized:
             #return the sum of all values in the matrix, except for the diagonal.
             matrix_without_hits = matrix * (1 - diagonal_mask)
             
-            return np.sum(matrix_without_hits, axis=0)
+            summed_list = np.sum(matrix_without_hits, axis=0)
+            
+            summed_dict = {cls: value for cls, value in zip(self.table.keys(), summed_list)}
+            
+            return summed_dict
         else:
             try:
                 column_index = keys.index(cls)
@@ -191,9 +197,3 @@ class CMGeneralized:
         df = pd.DataFrame.from_dict(self.table, orient='index', columns=self.table.keys())
         df.index = self.table.keys()
         return str(df)
-
-if __name__ == "__main__":
-    gen = CMGeneralized({'t': [50, 50],
-                         'f': [50, 50]})
-    
-    print(gen.positive_rates(return_type=list))

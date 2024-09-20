@@ -34,7 +34,7 @@ class ACC:
             case CM():
                 
                 return (matrix.tp + matrix.tn) / (matrix.p + matrix.n) if matrix.p + matrix.n > 0 else 0
-            case utils.confusion_matrix_generalized.CMGeneralized():
+            case CMGeneralized():
                 matrix = self.cm.array()
                 
                 true_values = np.sum(matrix.diagonal())
@@ -45,9 +45,16 @@ class ACC:
                 raise TypeError('Type must be CM or CMGeneralized')
 
 if __name__ == "__main__":
-    gen = CMGeneralized({'a': [3, 1, 2, 3],
-                         'b': [2, 5, 1, 1],
-                         'c': [3, 3, 5, 2],
-                         'd': [2, 1, 2, 4]})
+    gen = CMGeneralized({
+        't': [91, 36],
+        'f': [27, 50]
+    })
     
     test = ACC(gen)
+    
+    print(test.value)
+    
+    gen = CM({'tp': 91, 'fn': 36, 'tn': 50, 'fp': 27})
+    
+    test = ACC(gen)
+    print(test.value)
