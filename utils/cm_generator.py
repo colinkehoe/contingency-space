@@ -20,22 +20,8 @@ def _verify_cm(trues, falses, expected_sum):
 
 
 class CMGenerator:
-
-    #change to take any # of classes
-    #change to take an imbalance ratio
-    def old_constructor(self, n_p, n_n, n_cm):
-        """
-
-        :param n_p: number of positive instances
-        :param n_n: number of negative instances
-        :param n_cm: number of splits
-        """
-        self.n_cm = n_cm
-        self.n_p = n_p
-        self.n_n = n_n
-        self.all_cms = []
         
-    def __init__(self, num_classes: int, num_instances: int, instances_per_class: dict[str, int]):
+    def __init__(self, num_classes: int, instances_per_class: dict[str, int]):
         """Create an object capable of generating Confusion Matrices using the parameters given.
 
         Args:
@@ -45,33 +31,13 @@ class CMGenerator:
         """
         
         self.num_classes: int = num_classes
-        self.n_instances: int = num_instances
+        self.n_instances: int = sum(instances_per_class.values())
         self.n_per_class: dict[str, int] = instances_per_class
         self.all_cms: list[CMGeneralized] = []
-        
-        if sum(instances_per_class.values()) != num_instances:
-            raise ValueError('The sum of all instances per class must be equal to the total number of instances.')
         
         #We could either use lists, or have num_instances_perclass be a dict instead, with the class names as keys.      
         return
 
-    def generate_cms_old(self):
-        all_tp = np.linspace(0, self.n_p, self.n_cm, dtype=int)
-        all_fn = self.n_p - all_tp
-        _verify_cm(all_tp, all_fn, self.n_p)
-
-        all_tn = np.linspace(0, self.n_n, self.n_cm, dtype=int)
-        all_fp = self.n_n - all_tn
-        _verify_cm(all_tn, all_fp, self.n_n)
-
-        for i in range(len(all_tp)):
-            for j in range(len(all_tn)):
-                self.all_cms.append(
-                    CM({'tp': all_tp[i],
-                        'fn': all_fn[i],
-                        'tn': all_tn[j],
-                        'fp': all_fp[j]})
-                )
     def generate_cms(self, granularity: int) -> list[CMGeneralized]:
         """Generates a series of confusion matrices.
 
