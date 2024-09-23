@@ -50,6 +50,7 @@ class CMGeneralized:
             values (list[int]): Values of the row.
         """
         self.table.update({cls: values})
+        self.class_freqs.update({cls: int(np.sum(np.array(values)))})
         self.num_classes += 1
         
     def normalize(self):
@@ -198,3 +199,12 @@ class CMGeneralized:
         df = pd.DataFrame.from_dict(self.table, orient='index', columns=self.table.keys())
         df.index = self.table.keys()
         return str(df)
+    
+if __name__ == "__main__":
+    matrix = CMGeneralized()
+    matrix.add_class('a', [500, 500, 500])
+    matrix.add_class('b', [500, 500, 500])
+    matrix.add_class('c', [500, 500, 500])
+    
+    matrix.normalize()
+    

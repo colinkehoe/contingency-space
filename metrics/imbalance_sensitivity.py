@@ -102,8 +102,6 @@ def imbalance_sensitivity(imbalance: float | int | str | tuple[int, int], metric
     
     #pairwise difference between points
     differences = imbalanced_scores_as_mat - balanced_scores_as_mat
-    
-    print(np.sum(np.abs(differences)))
     #return the 
     return np.sum(np.abs(differences)) / pow(granularity, num_classes)
 

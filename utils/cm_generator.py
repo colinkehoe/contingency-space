@@ -86,7 +86,6 @@ class CMGenerator:
         #Generate every rate possible for each class.
         all_rates: dict[str, list] = {}
         for cls in self.n_per_class.keys():
-            print(self.n_per_class[cls])
             all_rates.update({cls: np.linspace(0, self.n_per_class[cls], granularity, dtype=int)})
             
         #grab the values and make a list of every possible combination of the rates.
