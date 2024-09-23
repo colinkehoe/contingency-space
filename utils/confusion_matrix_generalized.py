@@ -33,9 +33,13 @@ class CMGeneralized:
         as values.
         """
         
-        
         self.table = copy.deepcopy(table)
         self.num_classes = len(self.table)
+        
+        for row in self.table.values():
+            if len(row) != self.num_classes:
+                raise ValueError('Length of each row must be equal to the number of classes.')
+        
         self.class_freqs = {}
         for k, v in table.items():
             self.class_freqs.update({k: int(np.sum(np.array(v)))})
@@ -75,7 +79,7 @@ class CMGeneralized:
         a = np.array(list(self.table.values()))
         return np.sum(a.diagonal())
 
-    def get_false_predictions(self, cls: str = None) -> dict[str, int] | int:
+    def get_false_classifications(self, cls: str = None) -> dict[str, int] | int:
         """
         For each class i, the total amount of false predictions is the sum of the counts in column i, except the one on the diagonal. 
         For binary classification, this will return the number of false positives in the matrix.
@@ -116,7 +120,7 @@ class CMGeneralized:
             #return the sum of all values in the matrix, except for the diagonal.
             return matrix[:, column_index][~diagonal_mask[:, column_index]].sum()
             
-    def get_missed_predictions(self, cls: str = None) -> list[int] | int:
+    def get_missed_classifications(self, cls: str = None) -> list[int] | int:
         """
         For each class i, the total amount of missed predictions is the sum of the counts in row i, except the one on the diagonal. 
         For binary classification, this will return the number of false negatives in the matrix.
@@ -206,5 +210,5 @@ if __name__ == "__main__":
     matrix.add_class('b', [500, 500, 500])
     matrix.add_class('c', [500, 500, 500])
     
-    matrix.normalize()
+    print(matrix)
     
