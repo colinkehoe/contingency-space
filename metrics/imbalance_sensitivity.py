@@ -88,6 +88,12 @@ def imbalance_sensitivity(imbalance: float | int | str | tuple[int, int], metric
     #calculate the scores for all cms
     imbalanced_scores = calculate_scores(matrices_imbalanced.all_cms, metric)
     balanced_scores = calculate_scores(matrices_balanced.all_cms, metric)
+
+    for i, b in zip(imbalanced_scores, balanced_scores):
+        if i > 1 or i < 0:
+            raise ValueError("Function must return a score between 0 and 1.")
+        if b > 1 or b < 0:
+            raise ValueError("Function must return a score between 0 and 1.")
     
     #re-organize the matrices so that they are aligned as they belong on a contingency space
     imbalanced_scores_as_mat = np.flip(np.array(imbalanced_scores).reshape((granularity, granularity)), 0)
@@ -102,6 +108,6 @@ def imbalance_sensitivity(imbalance: float | int | str | tuple[int, int], metric
     return np.sum(np.abs(differences)) / pow(granularity, num_classes)
 
 if __name__ == "__main__":
-    one_four = imbalance_sensitivity(4, accuracy)
+    one_four = imbalance_sensitivity(4, balanced_accuracy)
 
     print(f'1 : 4 -> {one_four}')

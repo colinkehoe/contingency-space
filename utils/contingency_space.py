@@ -4,6 +4,7 @@ import numpy as np
 from utils.confusion_matrix_generalized import CMGeneralized
 from utils.confusion_matrix import CM
 from enum import Enum
+from typing import Callable
 
 from metrics import *
 
@@ -113,7 +114,7 @@ class ContingencySpace:
         
         return distance_traveled
     
-    def learning_path_length_3D(self, points: tuple[str, str], metric: type=ACC) -> float:
+    def learning_path_length_3D(self, points: tuple[str, str], metric: Callable[[CMGeneralized], float]) -> float:
         """Calculate the learning path between the first and last points given, using an accuracy metric to determine a third dimension. Currently only works for binary classification problems. 
 
         Args:
@@ -142,11 +143,11 @@ class ContingencySpace:
             
             #get the first coordinates
             (previous_x, previous_y) = self.matrices[previous_key].positive_rates(return_type=tuple)
-            previous_z = metric(self.matrices[previous_key]).value
+            previous_z = metric(self.matrices[previous_key])
             
             #get the coordinates of the next point.
             (current_x, current_y) = self.matrices[key].positive_rates()
-            current_z = metric(self.matrices[key]).value
+            current_z = metric(self.matrices[key])
             
             #calculate the distance from the previous point to the current point.
             d = np.sqrt((current_x - previous_x)**2 + (current_y - previous_y)**2 + (current_z - previous_z)**2)
