@@ -52,3 +52,15 @@ class PRE:
                 pre_macro[pre_macro == np.inf] = 0
                 pr = np.nanmean(pre_macro)
         return pr
+
+def precision(cm: CMGeneralized) -> float:
+    matrix = cm.array()
+    
+    true_pred = matrix.diagonal()
+    column_sums = np.sum(matrix, axis=0)
+    
+    precisions: list[float] = []
+    for true, cs in zip(true_pred, column_sums):
+        precisions.append(true_pred / cs)
+        
+    return np.sum(precisions) / cm.num_classes

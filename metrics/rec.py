@@ -53,3 +53,15 @@ class REC:
                 re = np.nanmean(rec_macro)
 
         return re
+    
+def recall(cm: CMGeneralized) -> float:
+    matrix = cm.array()
+    
+    true_pred = matrix.diagonal()
+    row_sums = np.sum(matrix, axis=1)
+    
+    precisions: list[float] = []
+    for true, sum in zip(true_pred, row_sums):
+        precisions.append(true_pred / sum)
+        
+    return np.sum(precisions) / cm.num_classes

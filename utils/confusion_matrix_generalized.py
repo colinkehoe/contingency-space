@@ -50,6 +50,7 @@ class CMGeneralized:
             values (list[int]): Values of the row.
         """
         self.table.update({cls: values})
+        self.num_classes += 1
         
     def normalize(self):
         """

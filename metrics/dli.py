@@ -1,6 +1,7 @@
 import copy
 import numpy as np
 from utils.confusion_matrix import CM
+from utils.confusion_matrix_generalized import CMGeneralized
 
 
 class DLI:
@@ -28,3 +29,6 @@ class DLI:
         num = np.power(cm.tp * cm.tn - cm.fp * cm.fn, 2)
         den = (cm.tp + cm.fp) * (cm.tp + cm.fn) * cm.p * cm.n
         return num / den if den != 0 else 0
+
+def doolittle_index(cm: CMGeneralized) -> float:
+    matrix = copy.deepcopy(cm)

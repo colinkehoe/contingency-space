@@ -39,3 +39,9 @@ class BAC:
                 return np.sum(positive_rates) / matrix.num_classes
             case _:
                 raise TypeError('Type must be CM or CMGeneralized')
+
+def balanced_accuracy(matrix: CMGeneralized):
+    
+    positive_rates: list[float] = matrix.positive_rates(return_type=list)
+    
+    return np.sum(positive_rates) / matrix.num_classes

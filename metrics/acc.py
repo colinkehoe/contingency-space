@@ -58,3 +58,19 @@ if __name__ == "__main__":
     
     test = ACC(gen)
     print(test.value)
+    
+def accuracy(cm: CMGeneralized) -> float:
+    """Returns the accuracy of a given model using the basic accuracy formula.
+
+    Args:
+        cm (CMGeneralized): A confusion matrix of any size.
+
+    Returns:
+        float: The accuracy of the model, as a decimal. 
+    """
+    matrix = cm.array()
+    
+    true_values = np.sum(matrix.diagonal())
+    total_values = np.sum(matrix)
+    
+    return true_values / total_values

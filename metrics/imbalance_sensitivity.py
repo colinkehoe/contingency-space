@@ -23,15 +23,12 @@ def imbalance_sensitivity(imbalance: float | int | str | tuple[int, int], metric
         metric (Callable[[CMGeneralized], float]): A function that calculates a metric given a Confusion Matrix. Should return a float. 
         granularity (int, optional): The number of points along each axis to generate confusion matrices from. Defaults to 15.
 
-    Raises:
-        TypeError: _description_
-
     Returns:
         float: A value representing the sensitivity of the given metric to the imbalance ratio. 
     """
     num_classes = 2
-    numerator = 0
-    denominator = 0
+    numerator = 1
+    denominator = 1
     
     #parse out the imbalance ratio
     match imbalance:
@@ -95,6 +92,7 @@ def imbalance_sensitivity(imbalance: float | int | str | tuple[int, int], metric
     #re-organize the matrices so that they are aligned as they belong on a contingency space
     imbalanced_scores_as_mat = np.flip(np.array(imbalanced_scores).reshape((granularity, granularity)), 0)
     balanced_scores_as_mat = np.flip(np.array(balanced_scores).reshape((granularity, granularity)), 0)
+
     
     #pairwise difference between points
     differences = imbalanced_scores_as_mat - balanced_scores_as_mat
@@ -103,21 +101,6 @@ def imbalance_sensitivity(imbalance: float | int | str | tuple[int, int], metric
     #return the 
     return np.sum(np.abs(differences)) / pow(granularity, num_classes)
 
-
-#some basic metric functions
-def accuracy(cm: CMGeneralized) -> float:
-    matrix = cm.array()
-    true_values = np.sum(matrix.diagonal())
-    total_values = np.sum(matrix)
-    
-    return true_values / total_values if total_values > 0 else 0
-    
-def balanced_accuracy(cm: CMGeneralized) -> float:
-    matrix = cm.array()
-    
-    (tpr, tnr) = cm.positive_rates()
-    
-    return (tpr + tnr) / 2
 if __name__ == "__main__":
     one_four = imbalance_sensitivity(4, accuracy)
 
