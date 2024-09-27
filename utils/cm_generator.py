@@ -1,6 +1,5 @@
 import numpy as np
-from utils.confusion_matrix import CM
-from utils.confusion_matrix_generalized import CMGeneralized
+from utils.confusion_matrix_generalized import CM
 import random
 import itertools
 import metrics
@@ -33,19 +32,19 @@ class CMGenerator:
         self.num_classes: int = num_classes
         self.n_instances: int = sum(instances_per_class.values())
         self.n_per_class: dict[str, int] = instances_per_class
-        self.all_cms: list[CMGeneralized] = []
+        self.all_cms: list[CM] = []
         
         #We could either use lists, or have num_instances_perclass be a dict instead, with the class names as keys.      
         return
 
-    def generate_cms(self, granularity: int) -> list[CMGeneralized]:
+    def generate_cms(self, granularity: int) -> list[CM]:
         """Generates a series of confusion matrices.
 
         Args:
             granularity (int): The number of values you wish to have on each axis. 
             
         Returns:
-            (list[CMGeneralized]): The matrices generated. These can also by accessed by calling show_all_cms().
+            (list[CM]): The matrices generated. These can also by accessed by calling show_all_cms().
         """
 
 
@@ -65,7 +64,7 @@ class CMGenerator:
         
         #generate every possible matrix
         for comb in combinations_with_keys:
-            matrix = CMGeneralized()
+            matrix = CM()
             
             #generate each row and insert it into the matrix
             for i, (cls, hits) in enumerate(comb.items()):

@@ -1,8 +1,7 @@
 import copy
 import pandas as pd
 import numpy as np
-from utils.confusion_matrix_generalized import CMGeneralized
-from utils.confusion_matrix import CM
+from utils.confusion_matrix_generalized import CM
 from enum import Enum
 from typing import Callable
 
@@ -53,21 +52,21 @@ class ContingencySpace:
 
                 return
             case _:
-                print('Something has gone wrong. You must pass a list or dictionary of CMGeneralized')
+                print('Something has gone wrong. You must pass a list or dictionary of CM')
                 return
     
-    def grab_entry(self, key: int | str) -> CMGeneralized | None:
+    def grab_entry(self, key: int | str) -> CM | None:
         """_summary_
 
         :param key (int/str): 
             the index or key for the Confusion Matrix to retrieve.
         
             
-        :return Confusion Matrix (CMGeneralized):
+        :return Confusion Matrix (CM):
             The Confusion Matrix requested. If there is no matrix found with that key, returns None.
         """
         
-        matrix: CMGeneralized = self.matrices[str(key)]
+        matrix: CM = self.matrices[str(key)]
         
         if not matrix:
             return None
@@ -114,7 +113,7 @@ class ContingencySpace:
         
         return distance_traveled
     
-    def learning_path_length_3D(self, points: tuple[str, str], metric: Callable[[CMGeneralized], float]) -> float:
+    def learning_path_length_3D(self, points: tuple[str, str], metric: Callable[[CM], float]) -> float:
         """Calculate the learning path between the first and last points given, using an accuracy metric to determine a third dimension. Currently only works for binary classification problems. 
 
         Args:
@@ -157,7 +156,7 @@ class ContingencySpace:
         
         return distance_traveled
     
-    def __init__(self, matrices: dict[str, CMGeneralized] | list[CMGeneralized] = None):
+    def __init__(self, matrices: dict[str, CM] | list[CM] = None):
         """
         
         The constructor for the contingency space.
@@ -187,12 +186,12 @@ class ContingencySpace:
             
 if __name__ == "__main__":
     p, n = 2500, 2500
-    gen = ContingencySpace({'1': CMGeneralized({'t': [5, 5],
+    gen = ContingencySpace({'1': CM({'t': [5, 5],
                                                 'f': [5, 5]}),
-                            '2': CMGeneralized({'t': [7, 4],
+                            '2': CM({'t': [7, 4],
                                                 'f': [3, 6]}),
-                            '3': CMGeneralized({'t': [7, 1],
+                            '3': CM({'t': [7, 1],
                                                 'f': [3, 9]}),
-                            '4': CMGeneralized({'t': [10, 0],
+                            '4': CM({'t': [10, 0],
                                                 'f': [0, 10]})
                         })

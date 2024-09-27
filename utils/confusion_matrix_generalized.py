@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 
-class CMGeneralized:
+class CM:
     """
     Confusion matrix class for multi-class problems.
     """
@@ -205,7 +205,7 @@ class CMGeneralized:
         return str(df)
     
 if __name__ == "__main__":
-    matrix = CMGeneralized()
+    matrix = CM()
     matrix.add_class('a', [500, 500, 500])
     matrix.add_class('b', [500, 500, 500])
     matrix.add_class('c', [500, 500, 500])
