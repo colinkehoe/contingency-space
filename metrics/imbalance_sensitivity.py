@@ -2,25 +2,24 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from metrics import *
-from utils.confusion_matrix import CM
-from utils.confusion_matrix_generalized import CMGeneralized
+from utils.confusion_matrix_generalized import CM
 from utils.cm_generator import CMGenerator
 from fractions import Fraction
 from typing import Callable
 
-def calculate_scores(matrices: list[CMGeneralized], metric: Callable[[CMGeneralized], float]) -> float:
+def calculate_scores(matrices: list[CM], metric: Callable[[CM], float]) -> float:
     all_scores = []
     for cm in matrices:
         m = metric(cm)
         all_scores.append(m)
     return all_scores
 
-def imbalance_sensitivity(imbalance: float | int | str | tuple[int, int], metric: Callable[[CMGeneralized], float], granularity: int = 15) -> float:
+def imbalance_sensitivity(imbalance: float | int | str | tuple[int, int], metric: Callable[[CM], float], granularity: int = 15) -> float:
     """Calculates the sensitivity of a given metric to a given imbalance ratio. 
 
     Args:
         imbalance (float | int): An integer representing the larger half of the imbalance ratio, or float containing the numerator and denominator
-        metric (Callable[[CMGeneralized], float]): A function that calculates a metric given a Confusion Matrix. Should return a float. 
+        metric (Callable[[CM], float]): A function that calculates a metric given a Confusion Matrix. Should return a float. 
         granularity (int, optional): The number of points along each axis to generate confusion matrices from. Defaults to 15.
 
     Returns:
@@ -106,6 +105,4 @@ def imbalance_sensitivity(imbalance: float | int | str | tuple[int, int], metric
     return np.sum(np.abs(differences)) / pow(granularity, num_classes)
 
 if __name__ == "__main__":
-    one_four = imbalance_sensitivity(4, balanced_accuracy)
-
-    print(f'1 : 4 -> {one_four}')
+    res = imbalance_sensitivity()
