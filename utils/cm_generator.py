@@ -25,7 +25,6 @@ class CMGenerator:
 
         Args:
             num_classes (int): The number of classes.
-            num_instances (int): The total number of predictions made by each model.
             instances_per_class (list): The number of instances of each class.
         """
         

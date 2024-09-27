@@ -81,17 +81,17 @@ class CM:
 
     def get_false_classifications(self, cls: str = None) -> dict[str, int] | int:
         """
-        For each class i, the total amount of false predictions is the sum of the counts in column i, except the one on the diagonal. 
+        For each class i, the total amount of false classifications is the sum of the counts in column i, except the one on the diagonal. 
         For binary classification, this will return the number of false positives in the matrix.
 
         Args:
             cls (str, optional): 
-                The class for which you wish to find the number of false predictions. If left blank, this function will return a list of false predictions by class. Defaults to None.
+                The class for which you wish to find the number of false classifications. If left blank, this function will return a list of false classifications by class.
 
         Returns:
             list[int] | int: 
-                -list[int]: List of the number of false predictions by class.
-                -int:       The total number of false predictions for the specified class.
+                -list[int]: List of the number of false classifications by class.
+                -int:       The total number of false classifications for the specified class.
         """
         
         
@@ -122,17 +122,17 @@ class CM:
             
     def get_missed_classifications(self, cls: str = None) -> list[int] | int:
         """
-        For each class i, the total amount of missed predictions is the sum of the counts in row i, except the one on the diagonal. 
+        For each class i, the total amount of missed classifications is the sum of the counts in row i, except the one on the diagonal. 
         For binary classification, this will return the number of false negatives in the matrix.
 
         Args:
             cls (str, optional): 
-                The class for which you wish to find the number of missed predictions. If left blank, this function will return a list of missed predictions by class. Defaults to None.
+                The class for which you wish to find the number of missed classifications. If left blank, this function will return a list of missed classifications by class. Defaults to None.
 
         Returns:
             result: list[int] | int: 
-                -list[int]: List of the number of missed predictions by class.
-                -int:       The total number of missed predictions for the specified class.
+                -list[int]: List of the number of missed classifications by class.
+                -int:       The total number of missed classifications for the specified class.
         """
         
         matrix = np.array(list(self.table.values()))
@@ -171,7 +171,7 @@ class CM:
         cm = np.array(list(self.table.values()))
         
         total_real = np.sum(cm, axis=1) #the total # of instances of each class.
-        true_pred = cm.diagonal() #the list of # of times the model predicted each class correctly.
+        true_pred = cm.diagonal() #the list of # of times the model classifications each class correctly.
         
         for real, pred in zip(total_real, true_pred): #create each coordinate
             rates.append(pred / real)
