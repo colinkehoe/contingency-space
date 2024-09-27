@@ -29,33 +29,33 @@ class CM:
 
 
 
-        :param table: a dictionary with all class names as keys and their corresponding frequencies
+        :param __table: a dictionary with all class names as keys and their corresponding frequencies
         as values.
         """
         
-        self.table = copy.deepcopy(table)
-        self.num_classes = len(self.table)
+        self.__table = copy.deepcopy(table)
+        self.__num_classes = len(self.__table)
         
-        for row in self.table.values():
-            if len(row) != self.num_classes:
+        for row in self.__table.values():
+            if len(row) != self.__num_classes:
                 raise ValueError('Length of each row must be equal to the number of classes.')
         
         self.class_freqs = {}
-        for k, v in table.items():
+        for k, v in self.__table.items():
             self.class_freqs.update({k: int(np.sum(np.array(v)))})
         self.dim = len(self.class_freqs.keys())
 
     def add_class(self, cls: str, values: list[int]) -> None:
-        """Adds a row to the table. Do not use this function unless you are building
+        """Adds a row to the matrix. Do not use this function unless you are building
         a matrix from scratch.
 
         Args:
             cls (str): The name of the class being added.
             values (list[int]): Values of the row.
         """
-        self.table.update({cls: values})
+        self.__table.update({cls: values})
         self.class_freqs.update({cls: int(np.sum(np.array(values)))})
-        self.num_classes += 1
+        self.__num_classes += 1
         
     def normalize(self):
         """
@@ -66,7 +66,7 @@ class CM:
         
         
         cm_normalized = {}
-        for k, freqs in self.table.items():
+        for k, freqs in self.__table.items():
             norm_freqs = [e / self.class_freqs[k] if self.class_freqs[k] != 0 else 0 for e in freqs]
             cm_normalized.update({k: norm_freqs})
         self.__init__(cm_normalized)
@@ -76,9 +76,11 @@ class CM:
         Returns:
             int: sum of the counts along the diagonal of the table.
         """
-        a = np.array(list(self.table.values()))
+        a = np.array(list(self.__table.values()))
         return np.sum(a.diagonal())
 
+    #name suggestions:
+    # get_false_as_class() or get_false_as()
     def get_false_classifications(self, cls: str = None) -> dict[str, int] | int:
         """
         For each class i, the total amount of false classifications is the sum of the counts in column i, except the one on the diagonal. 
@@ -95,8 +97,8 @@ class CM:
         """
         
         
-        matrix = np.array(list(self.table.values()))
-        keys = list(self.table.keys())
+        matrix = np.array(list(self.__table.values()))
+        keys = list(self.__table.keys())
         
         diagonal_mask = np.eye(len(matrix), dtype=bool) #create a mask for the diagonal of the matrix.
         
@@ -107,7 +109,7 @@ class CM:
             
             summed_list = np.sum(matrix_without_hits, axis=0)
             
-            summed_dict = {cls: value for cls, value in zip(self.table.keys(), summed_list)}
+            summed_dict = {cls: value for cls, value in zip(self.__table.keys(), summed_list)}
             
             return summed_dict
         else:
@@ -120,6 +122,10 @@ class CM:
             #return the sum of all values in the matrix, except for the diagonal.
             return matrix[:, column_index][~diagonal_mask[:, column_index]].sum()
             
+            
+    #name suggestions:
+    # get_misclassified_as_other()
+    # get_misclassified()
     def get_missed_classifications(self, cls: str = None) -> list[int] | int:
         """
         For each class i, the total amount of missed classifications is the sum of the counts in row i, except the one on the diagonal. 
@@ -135,8 +141,8 @@ class CM:
                 -int:       The total number of missed classifications for the specified class.
         """
         
-        matrix = np.array(list(self.table.values()))
-        keys = list(self.table.keys())
+        matrix = np.array(list(self.__table.values()))
+        keys = list(self.__table.keys())
         
         #create a diagonal mask for the matrix
         diagonal_mask = np.eye(len(matrix), dtype=bool)
@@ -158,7 +164,7 @@ class CM:
             return matrix[row_index, :][~diagonal_mask[row_index, :]].sum()
 
     def get_matrix(self):
-        return np.array(list(self.table.values()))
+        return np.array(list(self.__table.values()))
 
     def positive_rates(self, return_type: type = tuple) -> tuple[float, ...] | list[float]:
         """Returns a tuple representing the position of the confusion matrix within a contingency space. 
@@ -168,7 +174,7 @@ class CM:
         """
         
         rates = []
-        cm = np.array(list(self.table.values()))
+        cm = np.array(list(self.__table.values()))
         
         total_real = np.sum(cm, axis=1) #the total # of instances of each class.
         true_pred = cm.diagonal() #the list of # of times the model classifications each class correctly.
@@ -180,29 +186,67 @@ class CM:
     
     def num_samples(self, per_class:bool = False):
         
-        arr = np.array(list(self.table.values()))
+        arr = np.array(list(self.__table.values()))
         
         if per_class == True:
             return np.sum(arr, axis=1)
-        return np.sum(np.array(list(self.table.values())))
+        return np.sum(np.array(list(self.__table.values())))
     
     def array(self):
-        return np.array(list(self.table.values()))
+        return np.array(list(self.__table.values()))
     
-    def get_num_classes(self) -> int:
-        """Returns the number of classes.
-
-        Returns:
-            int: The number of classes.
-        """
-        return self.num_classes
+    @property
+    def matrix(self):
+        return self.__table
+    @matrix.getter
+    def matrix(self):
+        return self.__table
+    @matrix.setter
+    def matrix(self, new_table = dict[str, list[int]]):
+        if len(new_table) != len(self.__table):
+            raise ValueError("New matrix must be the same size as the old matrix.")
+        if set(self.__table.keys()) != set(new_table.keys()):
+            raise ValueError("New matrix must contain the same classes as the previous matrix.")
+        for row in new_table.values():
+            if len(row) != self.__num_classes:
+                raise ValueError("Number of elements in each row must match the number of classes in the original matrix.")
+            
+        self.__table = new_table
+    
+    @property
+    def num_classes(self):
+        return self.__num_classes
         
 
     def __repr__(self) -> str:
         #called when printing the object
-        df = pd.DataFrame.from_dict(self.table, orient='index', columns=self.table.keys())
-        df.index = self.table.keys()
+        df = pd.DataFrame.from_dict(self.__table, orient='index', columns=self.__table.keys())
+        df.index = self.__table.keys()
         return str(df)
+    
+    def __eq__(self, other) -> bool:
+        """Compares this CM with another CM. 
+        
+        Returns whether the frequencies in this matrix match the frequencies of
+        another matrix.
+
+        Args:
+            other (CM): 
+                The other matrix that will be compared with this one.
+
+        Returns:
+            bool: 
+                Returns True if the frequencies of the given matrices match, and
+                False if they do not.
+        """
+        if other.__class__ is self.__class__:
+            for this_freq, that_freq in zip(self.class_freqs, other.class_freqs):
+                if this_freq != that_freq:
+                    return False
+            return True
+        else:
+            return NotImplemented
+        
     
 if __name__ == "__main__":
     matrix = CM()
@@ -210,5 +254,9 @@ if __name__ == "__main__":
     matrix.add_class('b', [500, 500, 500])
     matrix.add_class('c', [500, 500, 500])
     
-    print(matrix)
+    matrix.matrix = {'a': [600, 600, 600],
+                     'b': [600, 600, 600],
+                     'c': [600, 600, 600]}
+    
+    print(matrix.matrix)
     
