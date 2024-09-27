@@ -1,25 +1,16 @@
 import numpy as np
 from utils.confusion_matrix_generalized import CM
-import random
 import itertools
-import metrics
-import math
-
-
-def _verify_cm(trues, falses, expected_sum):
-    res = [False for a in (trues + falses) if a != expected_sum]
-    if len(res) > 0:
-        raise ValueError(
-            """
-            At least one of the following conditions is violated:
-               TP + FN = P
-               TN + FP = N
-            """
-        )
 
 
 class CMGenerator:
-        
+    """Object that generates a set of confusion matrices.
+    
+    Constructed given a number of classes and the number of instances of each class.
+    
+    Object will generate a series when generate_cms() is called. 
+    """
+    
     def __init__(self, num_classes: int, instances_per_class: dict[str, int]):
         """Create an object capable of generating Confusion Matrices using the parameters given.
 

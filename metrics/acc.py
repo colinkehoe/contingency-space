@@ -5,7 +5,7 @@ def accuracy(cm: CM) -> float:
     """Returns the accuracy of a given model using the basic accuracy formula.
 
     Args:
-        cm (CMGeneralized): A confusion matrix of any size.
+        cm (CM): A confusion matrix of any size.
 
     Returns:
         float: The accuracy of the model, as a decimal. 
