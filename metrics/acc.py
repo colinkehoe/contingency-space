@@ -1,7 +1,7 @@
 import numpy as np
-from utils.confusion_matrix_generalized import CM
+from utils import ConfusionMatrix
 
-def accuracy(cm: CM) -> float:
+def accuracy(cm: ConfusionMatrix) -> float:
     """Returns the accuracy of a given model using the basic accuracy formula.
 
     Args:

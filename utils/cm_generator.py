@@ -1,5 +1,5 @@
 import numpy as np
-from utils.confusion_matrix_generalized import CM
+from utils import ConfusionMatrix
 import itertools
 
 
@@ -22,19 +22,19 @@ class CMGenerator:
         self.num_classes: int = num_classes
         self.n_instances: int = sum(instances_per_class.values())
         self.n_per_class: dict[str, int] = instances_per_class
-        self.all_cms: list[CM] = []
+        self.all_cms: list[ConfusionMatrix] = []
         
         #We could either use lists, or have num_instances_perclass be a dict instead, with the class names as keys.      
         return
 
-    def generate_cms(self, granularity: int) -> list[CM]:
+    def generate_cms(self, granularity: int) -> list[ConfusionMatrix]:
         """Generates a series of confusion matrices.
 
         Args:
             granularity (int): The number of values you wish to have on each axis. 
             
         Returns:
-            (list[CM]): The matrices generated. These can also by accessed by calling show_all_cms().
+            (list[ConfusionMatrix]): The matrices generated. These can also by accessed by calling show_all_cms().
         """
 
 
@@ -54,7 +54,7 @@ class CMGenerator:
         
         #generate every possible matrix
         for comb in combinations_with_keys:
-            matrix = CM()
+            matrix = ConfusionMatrix()
             
             #generate each row and insert it into the matrix
             for i, (cls, hits) in enumerate(comb.items()):

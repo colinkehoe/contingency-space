@@ -249,14 +249,10 @@ class CM:
         
     
 if __name__ == "__main__":
-    matrix = CM()
-    matrix.add_class('a', [500, 500, 500])
-    matrix.add_class('b', [500, 500, 500])
-    matrix.add_class('c', [500, 500, 500])
+    matrix_1 = CM({'a': [500, 500],
+                   'b': [500, 500]})
+    matrix_2 = CM({'a': [250, 250],
+                   'b': [250, 250]})
     
-    matrix.matrix = {'a': [600, 600, 600],
-                     'b': [600, 600, 600],
-                     'c': [600, 600, 600]}
-    
-    print(matrix.matrix)
+    print(matrix_1 == matrix_2)
     

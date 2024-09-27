@@ -1,8 +1,7 @@
 import copy
 import pandas as pd
 import numpy as np
-from utils.confusion_matrix_generalized import CM
-from enum import Enum
+from utils import ConfusionMatrix
 from typing import Callable
 
 from metrics import *
@@ -52,10 +51,10 @@ class ContingencySpace:
 
                 return
             case _:
-                print('Something has gone wrong. You must pass a list or dictionary of CM')
+                print('Something has gone wrong. You must pass a list or dictionary of ConfusionMatrix')
                 return
     
-    def grab_entry(self, key: int | str) -> CM | None:
+    def grab_entry(self, key: int | str) -> ConfusionMatrix | None:
         """_summary_
 
         :param key (int/str): 
@@ -66,7 +65,7 @@ class ContingencySpace:
             The Confusion Matrix requested. If there is no matrix found with that key, returns None.
         """
         
-        matrix: CM = self.matrices[str(key)]
+        matrix: ConfusionMatrix = self.matrices[str(key)]
         
         if not matrix:
             return None
@@ -113,7 +112,7 @@ class ContingencySpace:
         
         return distance_traveled
     
-    def learning_path_length_3D(self, points: tuple[str, str], metric: Callable[[CM], float]) -> float:
+    def learning_path_length_3D(self, points: tuple[str, str], metric: Callable[[ConfusionMatrix], float]) -> float:
         """Calculate the learning path between the first and last points given, using an accuracy metric to determine a third dimension. Currently only works for binary classification problems. 
 
         Args:
@@ -156,7 +155,7 @@ class ContingencySpace:
         
         return distance_traveled
     
-    def __init__(self, matrices: dict[str, CM] | list[CM] = None):
+    def __init__(self, matrices: dict[str, ConfusionMatrix] | list[ConfusionMatrix] = None):
         """
         
         The constructor for the contingency space.
@@ -178,7 +177,7 @@ class ContingencySpace:
             self.matrices = {}
             match matrices:
                 case list():
-                    #generate keys for each CM
+                    #generate keys for each ConfusionMatrix
                     for index, cm in enumerate(matrices):
                         self.matrices.update({str(index): cm})
                 case dict():
@@ -186,12 +185,14 @@ class ContingencySpace:
             
 if __name__ == "__main__":
     p, n = 2500, 2500
-    gen = ContingencySpace({'1': CM({'t': [5, 5],
+    gen = ContingencySpace({'1': ConfusionMatrix({'t': [5, 5],
                                                 'f': [5, 5]}),
-                            '2': CM({'t': [7, 4],
+                            '2': ConfusionMatrix({'t': [7, 4],
                                                 'f': [3, 6]}),
-                            '3': CM({'t': [7, 1],
+                            '3': ConfusionMatrix({'t': [7, 1],
                                                 'f': [3, 9]}),
-                            '4': CM({'t': [10, 0],
+                            '4': ConfusionMatrix({'t': [10, 0],
                                                 'f': [0, 10]})
                         })
+    
+    gen.show_history()
