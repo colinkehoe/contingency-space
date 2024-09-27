@@ -1,5 +1,5 @@
 import numpy as np
-from utils import ConfusionMatrix
+from utils.confusion_matrix import ConfusionMatrix
 import itertools
 
 

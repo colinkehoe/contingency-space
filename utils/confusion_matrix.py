@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 
-class CM:
+class ConfusionMatrix:
     """
     Confusion matrix class for multi-class problems.
     """
