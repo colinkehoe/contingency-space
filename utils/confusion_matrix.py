@@ -1,6 +1,7 @@
 import copy
 import pandas as pd
 import numpy as np
+import numpy.typing as npt
 
 
 class ConfusionMatrix:
@@ -81,10 +82,12 @@ class ConfusionMatrix:
 
     #name suggestions:
     # get_false_as_class() or get_false_as()
-    def get_false_classifications(self, cls: str = None) -> dict[str, int] | int:
+    def get_wrong_classifications(self, cls: str = None) -> dict[str, int] | int:
         """
         For each class i, the total amount of false classifications is the sum of the counts in column i, except the one on the diagonal. 
         For binary classification, this will return the number of false positives in the matrix.
+        
+        #Explain in context of classification
 
         Args:
             cls (str, optional): 
@@ -166,7 +169,7 @@ class ConfusionMatrix:
     def get_matrix(self):
         return np.array(list(self.__table.values()))
 
-    def positive_rates(self, return_type: type = tuple) -> tuple[float, ...] | list[float]:
+    def vector(self, return_type: npt.ArrayLike = tuple) -> tuple[float, ...] | list[float]:
         """Returns a tuple representing the position of the confusion matrix within a contingency space. 
 
         Returns:
@@ -192,7 +195,7 @@ class ConfusionMatrix:
             return np.sum(arr, axis=1)
         return np.sum(np.array(list(self.__table.values())))
     
-    def array(self):
+    def array(self) -> npt.NDArray:
         return np.array(list(self.__table.values()))
     
     @property
@@ -249,10 +252,10 @@ class ConfusionMatrix:
         
     
 if __name__ == "__main__":
-    matrix_1 = CM({'a': [500, 500],
-                   'b': [500, 500]})
-    matrix_2 = CM({'a': [250, 250],
-                   'b': [250, 250]})
+    matrix_1 = ConfusionMatrix({'a': [500, 500],
+                                'b': [500, 500]})
+    matrix_2 = ConfusionMatrix({'a': [250, 250],
+                                'b': [250, 250]})
     
     print(matrix_1 == matrix_2)
     
