@@ -2,6 +2,7 @@ import copy
 import pandas as pd
 import numpy as np
 import numpy.typing as npt
+from typing import Callable
 
 
 class ConfusionMatrix:
@@ -60,9 +61,14 @@ class ConfusionMatrix:
         
     def normalize(self):
         """
-        normalizes all entries of the confusion matrix.
-
-        :return: None.
+        Normalizes all entries of the confusion matrix::
+        
+                           (pred)                           (pred)
+                         a   b   c                        a   b   c
+                       ____________                      ____________
+                    a  | 30  60  10      =>          a  |0.3 0.6 0.1
+             (real) b  | 60  20  20      =>   (real) b  |0.6 0.2 0.2
+                    c  | 30  20  50      =>          c  |0.3 0.2 0.5
         """
         
         
@@ -80,14 +86,27 @@ class ConfusionMatrix:
         a = np.array(list(self.__table.values()))
         return np.sum(a.diagonal())
 
-    #name suggestions:
-    # get_false_as_class() or get_false_as()
     def get_wrong_classifications(self, cls: str = None) -> dict[str, int] | int:
         """
         For each class i, the total amount of false classifications is the sum of the counts in column i, except the one on the diagonal. 
         For binary classification, this will return the number of false positives in the matrix.
         
-        #Explain in context of classification
+        In terms of a classification problem, this is the number of times that the model predicted a class, when the real value was a different one. 
+        
+        For example, given a matrix::
+        
+                           (pred)
+                         a   b   c
+                       ____________
+                    a  | ta  fba fca
+             (real) b  | fab tb  fcb
+                    c  | fac fbc tc
+                    
+        The values would like like so::
+        
+                    {'a': (fab + fac),
+                     'b': (fba + fbc),
+                     'c': (fca + fcb)}
 
         Args:
             cls (str, optional): 
@@ -125,14 +144,27 @@ class ConfusionMatrix:
             #return the sum of all values in the matrix, except for the diagonal.
             return matrix[:, column_index][~diagonal_mask[:, column_index]].sum()
             
-            
-    #name suggestions:
-    # get_misclassified_as_other()
-    # get_misclassified()
     def get_missed_classifications(self, cls: str = None) -> list[int] | int:
         """
         For each class i, the total amount of missed classifications is the sum of the counts in row i, except the one on the diagonal. 
         For binary classification, this will return the number of false negatives in the matrix.
+        
+        In terms of a classification problem, this is the number of times that the model a different class than the one given. 
+        
+        For example, given a matrix::
+        
+                           (pred)
+                         a   b   c
+                       ____________
+                    a  | ta  fba fca
+             (real) b  | fab tb  fcb
+                    c  | fac fbc tc
+                    
+        The values would like like so::
+        
+                    {'a': (fba + fca),
+                     'b': (fab + fcb),
+                     'c': (fac + fbc)}
 
         Args:
             cls (str, optional): 
@@ -169,8 +201,14 @@ class ConfusionMatrix:
     def get_matrix(self):
         return np.array(list(self.__table.values()))
 
-    def vector(self, return_type: npt.ArrayLike = tuple) -> tuple[float, ...] | list[float]:
+    def vector(self, return_type: tuple | list = tuple, metric: Callable[[], float]=None) -> tuple[float, ...] | list[float]:
         """Returns a tuple representing the position of the confusion matrix within a contingency space. 
+        
+        Args:
+            return_type (tuple | list): 
+                The type of structure you wish the point to be returned as. Defaults to tuple.
+            metric: (Callable[[ConfusionMatrix], float]): 
+                A function that takes in a ConfusionMatrix, and returns a float representing an evaluation score for the metric. 
 
         Returns:
             c (tuple[int, ...] | list[int]): The tuple taking the form (x1, x2, ..., xk), where k is the number of classes.
@@ -184,6 +222,9 @@ class ConfusionMatrix:
         
         for real, pred in zip(total_real, true_pred): #create each coordinate
             rates.append(pred / real)
+            
+        if metric is not None:
+            rates.append(metric(self))
         
         return return_type(rates)
     
@@ -196,6 +237,11 @@ class ConfusionMatrix:
         return np.sum(np.array(list(self.__table.values())))
     
     def array(self) -> npt.NDArray:
+        """Returns the matrix as a numpy array.
+
+        Returns:
+            npt.NDArray: A numpy array representation of the ConfusionMatrix.
+        """
         return np.array(list(self.__table.values()))
     
     @property
@@ -252,10 +298,13 @@ class ConfusionMatrix:
         
     
 if __name__ == "__main__":
-    matrix_1 = ConfusionMatrix({'a': [500, 500],
-                                'b': [500, 500]})
-    matrix_2 = ConfusionMatrix({'a': [250, 250],
-                                'b': [250, 250]})
+    matrix_1 = ConfusionMatrix({
+        'a': [30, 60, 10],
+        'b': [20, 70, 10],
+        'c': [40, 20, 40]
+    })
     
-    print(matrix_1 == matrix_2)
+    matrix_1.normalize()
+    
+    print(matrix_1)
     
