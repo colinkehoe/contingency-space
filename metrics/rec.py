@@ -24,11 +24,7 @@ def recall(cm: ConfusionMatrix, average: Average = Average.MACRO) -> float:
     matrix = cm.array()
     result: float = 0
     
-    if (cm.num_classes == 2):
-        #handle binary case
-        result = 1
-    
-    match Average:
+    match average:
         case Average.MACRO:
             row_sums = np.sum(matrix, axis=1)
             

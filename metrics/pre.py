@@ -27,13 +27,6 @@ def precision(cm: ConfusionMatrix, average: Average = Average.MACRO) -> float:
     
     matrix = cm.array()
     result: float = 0
-    
-    if (cm.num_classes == 2):
-        #Handle binary case. Needs to be implemented.
-        
-        m_dict: dict[str, list[int]] = matrix.matrix
-        
-        result = 1
 
     match average:
         case Average.MACRO:

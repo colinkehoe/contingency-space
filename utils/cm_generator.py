@@ -37,7 +37,6 @@ class CMGenerator:
             (list[ConfusionMatrix]): The matrices generated. These can also by accessed by calling show_all_cms().
         """
 
-
         #Generate every rate possible for each class.
         all_rates: dict[str, list] = {}
         for cls in self.n_per_class.keys():

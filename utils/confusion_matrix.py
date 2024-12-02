@@ -4,6 +4,8 @@ import numpy as np
 import numpy.typing as npt
 from typing import Callable
 
+# this is an edit placed here in notepad.
+
 
 class ConfusionMatrix:
     """
@@ -78,13 +80,27 @@ class ConfusionMatrix:
             cm_normalized.update({k: norm_freqs})
         self.__init__(cm_normalized)
 
-    def get_total_true(self):
+    def get_total_true(self, per_class: bool = False) -> int | dict[str, int]:
         """
         Returns:
             int: sum of the counts along the diagonal of the table.
         """
         a = np.array(list(self.__table.values()))
-        return np.sum(a.diagonal())
+        
+        match per_class:
+            case True:
+                
+                return_dict: dict[str, int] = {}
+                
+                preds = a.diagonal()
+                for cls, val in zip(self.__table.keys(), preds):
+                    return_dict.update({cls: val})
+                
+                return return_dict
+            case False:
+                return np.sum(a.diagonal())
+            case _:
+                raise ValueError('per_class must be either True or False.')
 
     def get_wrong_classifications(self, cls: str = None) -> dict[str, int] | int:
         """
@@ -205,6 +221,7 @@ class ConfusionMatrix:
         """Returns a tuple representing the position of the confusion matrix within a contingency space. 
         
         Args:
+        
             return_type (tuple | list): 
                 The type of structure you wish the point to be returned as. Defaults to tuple.
             metric: (Callable[[ConfusionMatrix], float]): 
@@ -223,8 +240,11 @@ class ConfusionMatrix:
         for real, pred in zip(total_real, true_pred): #create each coordinate
             rates.append(pred / real)
             
+        rates.reverse() # flip to (tnr, tpr)
+            
         if metric is not None:
             rates.append(metric(self))
+            
         
         return return_type(rates)
     
@@ -273,6 +293,27 @@ class ConfusionMatrix:
         df.index = self.__table.keys()
         return str(df)
     
+    def __getitem__(self, index: str, give_index: bool = False):
+        
+        if index in self.__table:
+            return self.__table[index]
+        
+        if self.num_classes == 2:
+            if index.__contains__('t') or index.__contains__('p'):
+                for i, cls in enumerate(self.__table.keys()):
+                    if cls.__contains__('t') or cls.__contains__('p'):
+                        if give_index == True:
+                            return (self.__table[cls], i)
+                        return self.__table[cls]
+            if index.__contains__('f') or index.__contains__('n'):
+                for i, cls in enumerate(self.__table.keys()):
+                    if cls.__contains__('f') or cls.__contains('n'):
+                        if give_index == True:
+                            return (self.__table[cls], i)
+                        return self.__table[cls]
+                    
+        raise IndexError(f'Class "{index}" not found within the confusion matrix.')
+    
     def __eq__(self, other) -> bool:
         """Compares this CM with another CM. 
         
@@ -304,7 +345,5 @@ if __name__ == "__main__":
         'c': [40, 20, 40]
     })
     
-    matrix_1.normalize()
-    
-    print(matrix_1)
+    matrix_1.vector()
     
