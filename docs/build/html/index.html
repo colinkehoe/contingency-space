@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Contingency Space documentation &#8212; Contingency Space 0.1.9 documentation</title>
+    <title>Contingency Space &#8212; Contingency Space 0.1.9 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
@@ -31,11 +31,383 @@
 
           <div class="body" role="main">
             
-  <section id="contingency-space-documentation">
-<h1>Contingency Space documentation<a class="headerlink" href="#contingency-space-documentation" title="Link to this heading">¶</a></h1>
-<p>Add your content using <code class="docutils literal notranslate"><span class="pre">reStructuredText</span></code> syntax. See the
-<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText</a>
-documentation for details.</p>
+  <section id="module-contingency_space.contingency_space">
+<span id="contingency-space"></span><h1>Contingency Space<a class="headerlink" href="#module-contingency_space.contingency_space" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="contingency_space.contingency_space.ContingencySpace">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">contingency_space.contingency_space.</span></span><span class="sig-name descname"><span class="pre">ContingencySpace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#contingency_space.confusion_matrix.ConfusionMatrix" title="contingency_space.confusion_matrix.ConfusionMatrix"><span class="pre">ConfusionMatrix</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#contingency_space.confusion_matrix.ConfusionMatrix" title="contingency_space.confusion_matrix.ConfusionMatrix"><span class="pre">ConfusionMatrix</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contingency_space.contingency_space.ContingencySpace" title="Link to this definition">¶</a></dt>
+<dd><p>An implementation of the Contingency Space.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.contingency_space.ContingencySpace.add_history">
+<span class="sig-name descname"><span class="pre">add_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contingency_space.contingency_space.ContingencySpace.add_history" title="Link to this definition">¶</a></dt>
+<dd><p>Add a history entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>values</strong> – the rates at which the model performed. Can either be a list with the rates of a single model
+or a dictionary consisting of multiple models with associated keys.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.contingency_space.ContingencySpace.grab_entry">
+<span class="sig-name descname"><span class="pre">grab_entry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#contingency_space.confusion_matrix.ConfusionMatrix" title="contingency_space.confusion_matrix.ConfusionMatrix"><span class="pre">ConfusionMatrix</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#contingency_space.contingency_space.ContingencySpace.grab_entry" title="Link to this definition">¶</a></dt>
+<dd><p>Grabs a matrix from the space history using a string or integer key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>int/str</em>) – the index or key for the Confusion Matrix to retrieve.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Confusion Matrix requested. If there is no matrix found with that key, returns None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#contingency_space.confusion_matrix.ConfusionMatrix" title="contingency_space.confusion_matrix.ConfusionMatrix">ConfusionMatrix</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.contingency_space.ContingencySpace.learning_path">
+<span class="sig-name descname"><span class="pre">learning_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#contingency_space.confusion_matrix.ConfusionMatrix" title="contingency_space.confusion_matrix.ConfusionMatrix"><span class="pre">ConfusionMatrix</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#contingency_space.contingency_space.ContingencySpace.learning_path" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the learning path between the first and last points given. Currently only works for binary classification problems.
+If a metric is provided, the function will calculate the learning path in 3D.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<em>tuple</em>) – a tuple consisting of two keys that correspond to CMs within the contingency space.</p></li>
+<li><p><strong>metric</strong> (<em>Callable</em>) – The metric to use for the z-axis. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.contingency_space.ContingencySpace.learning_path_length_2D">
+<span class="sig-name descname"><span class="pre">learning_path_length_2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#contingency_space.contingency_space.ContingencySpace.learning_path_length_2D" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the learning path between the first and last points given. Currently only works for binary classification problems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>points</strong> (<em>tuple</em>) – a tuple consisting of two keys that correspond to CMs within the contingency space.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the length of the learning path from the first point to the last.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.contingency_space.ContingencySpace.learning_path_length_3D">
+<span class="sig-name descname"><span class="pre">learning_path_length_3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#contingency_space.confusion_matrix.ConfusionMatrix" title="contingency_space.confusion_matrix.ConfusionMatrix"><span class="pre">ConfusionMatrix</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#contingency_space.contingency_space.ContingencySpace.learning_path_length_3D" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the learning path between the first and last points given, using an accuracy metric to determine a third dimension. Currently only works for binary classification problems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – The points you wish to calculate the learning path between. Defaults to None.</p></li>
+<li><p><strong>metric</strong> (<em>MetricType</em><em>, </em><em>optional</em>) – The metric you wish to assess the model with. Defaults to Accuracy.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The distance between the first point given and the last point given across the contingency space.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.contingency_space.ContingencySpace.show_history">
+<span class="sig-name descname"><span class="pre">show_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#contingency_space.contingency_space.ContingencySpace.show_history" title="Link to this definition">¶</a></dt>
+<dd><p>Shows the history of the space in confusion matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None.</strong></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Prints:</dt><dd><p>The matrices.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.contingency_space.ContingencySpace.visualize">
+<span class="sig-name descname"><span class="pre">visualize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#contingency_space.confusion_matrix.ConfusionMatrix" title="contingency_space.confusion_matrix.ConfusionMatrix"><span class="pre">ConfusionMatrix</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#contingency_space.confusion_matrix.ConfusionMatrix" title="contingency_space.confusion_matrix.ConfusionMatrix"><span class="pre">ConfusionMatrix</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'2d'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contingency_space.contingency_space.ContingencySpace.visualize" title="Link to this definition">¶</a></dt>
+<dd><p>Visualize the contingency space in 2D or 3D.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metric</strong> (<em>Callable</em>) – The metric to be used to determine the z-axis. If a list of metrics is provided, the user will be prompted to select one.</p></li>
+<li><p><strong>step_size</strong> (<em>int</em>) – The granularity of the space. Defaults to 30.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes._subplots.AxesSubplot</em>) – The axes to plot on. If not provided, a new figure will be created.</p></li>
+<li><p><strong>projection</strong> (<em>str</em>) – The projection to use. Can be either ‘2d’ or ‘3d’. Defaults to ‘2d’.</p></li>
+<li><p><strong>fig_size</strong> (<em>tuple</em>) – The size of the figure. Defaults to (5, 5).</p></li>
+<li><p><strong>point_size</strong> (<em>int</em>) – The size of the points on the plot. Defaults to 10.</p></li>
+<li><p><strong>lines</strong> (<em>bool</em>) – Whether to draw lines between the points. Defaults to True.</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – The title of the plot. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-contingency_space.confusion_matrix">
+<dt class="sig sig-object py" id="contingency_space.confusion_matrix.ConfusionMatrix">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">contingency_space.confusion_matrix.</span></span><span class="sig-name descname"><span class="pre">ConfusionMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contingency_space.confusion_matrix.ConfusionMatrix" title="Link to this definition">¶</a></dt>
+<dd><p>Confusion matrix class for multi-class problems.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.confusion_matrix.ConfusionMatrix.add_class">
+<span class="sig-name descname"><span class="pre">add_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#contingency_space.confusion_matrix.ConfusionMatrix.add_class" title="Link to this definition">¶</a></dt>
+<dd><p>Adds a row to the matrix. Do not use this function unless you are building
+a matrix from scratch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> (<em>str</em>) – The name of the class being added.</p></li>
+<li><p><strong>values</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – Values of the row.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.confusion_matrix.ConfusionMatrix.array">
+<span class="sig-name descname"><span class="pre">array</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarType_co</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#contingency_space.confusion_matrix.ConfusionMatrix.array" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the matrix as a numpy array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A numpy array representation of the ConfusionMatrix.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>npt.NDArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.confusion_matrix.ConfusionMatrix.get_missed_classifications">
+<span class="sig-name descname"><span class="pre">get_missed_classifications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></span><a class="headerlink" href="#contingency_space.confusion_matrix.ConfusionMatrix.get_missed_classifications" title="Link to this definition">¶</a></dt>
+<dd><p>For each class i, the total amount of missed classifications is the sum of the counts in row i, except the one on the diagonal.
+For binary classification, this will return the number of false negatives in the matrix.</p>
+<p>In terms of a classification problem, this is the number of times that the model a different class than the one given.</p>
+<p>For example, given a matrix:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>              <span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+            <span class="n">a</span>   <span class="n">b</span>   <span class="n">c</span>
+          <span class="n">____________</span>
+       <span class="n">a</span>  <span class="o">|</span> <span class="n">ta</span>  <span class="n">fba</span> <span class="n">fca</span>
+<span class="p">(</span><span class="n">real</span><span class="p">)</span> <span class="n">b</span>  <span class="o">|</span> <span class="n">fab</span> <span class="n">tb</span>  <span class="n">fcb</span>
+       <span class="n">c</span>  <span class="o">|</span> <span class="n">fac</span> <span class="n">fbc</span> <span class="n">tc</span>
+</pre></div>
+</div>
+<p>The values would like like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">fba</span> <span class="o">+</span> <span class="n">fca</span><span class="p">),</span>
+ <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">fab</span> <span class="o">+</span> <span class="n">fcb</span><span class="p">),</span>
+ <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">fac</span> <span class="o">+</span> <span class="n">fbc</span><span class="p">)}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cls</strong> (<em>str</em><em>, </em><em>optional</em>) – The class for which you wish to find the number of missed classifications. If left blank, this function will return a list of missed classifications by class. Defaults to None.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>list[int] | int:</dt><dd><p>-list[int]: List of the number of missed classifications by class.
+-int:       The total number of missed classifications for the specified class.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.confusion_matrix.ConfusionMatrix.get_total_true">
+<span class="sig-name descname"><span class="pre">get_total_true</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#contingency_space.confusion_matrix.ConfusionMatrix.get_total_true" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the total number of true classifications in the matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>per_class</strong> (<em>bool</em>) – Whether to return the number of true classifications per class. Defaults to False.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>sum of the counts along the diagonal of the table.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.confusion_matrix.ConfusionMatrix.get_wrong_classifications">
+<span class="sig-name descname"><span class="pre">get_wrong_classifications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></span><a class="headerlink" href="#contingency_space.confusion_matrix.ConfusionMatrix.get_wrong_classifications" title="Link to this definition">¶</a></dt>
+<dd><p>For each class i, the total amount of false classifications is the sum of the counts in column i, except the one on the diagonal.
+For binary classification, this will return the number of false positives in the matrix.</p>
+<p>In terms of a classification problem, this is the number of times that the model predicted a class, when the real value was a different one.</p>
+<p>For example, given a matrix:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>              <span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+            <span class="n">a</span>   <span class="n">b</span>   <span class="n">c</span>
+          <span class="n">____________</span>
+       <span class="n">a</span>  <span class="o">|</span> <span class="n">ta</span>  <span class="n">fba</span> <span class="n">fca</span>
+<span class="p">(</span><span class="n">real</span><span class="p">)</span> <span class="n">b</span>  <span class="o">|</span> <span class="n">fab</span> <span class="n">tb</span>  <span class="n">fcb</span>
+       <span class="n">c</span>  <span class="o">|</span> <span class="n">fac</span> <span class="n">fbc</span> <span class="n">tc</span>
+</pre></div>
+</div>
+<p>The values would be returned like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">fab</span> <span class="o">+</span> <span class="n">fac</span><span class="p">),</span>
+ <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">fba</span> <span class="o">+</span> <span class="n">fbc</span><span class="p">),</span>
+ <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">fca</span> <span class="o">+</span> <span class="n">fcb</span><span class="p">)}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cls</strong> (<em>str</em><em>, </em><em>optional</em>) – The class for which you wish to find the number of false classifications. If left blank, this function will return a list of false classifications by class.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>-list[int]: List of the number of false classifications by class.
+-int:       The total number of false classifications for the specified class.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[int] | int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.confusion_matrix.ConfusionMatrix.labels">
+<span class="sig-name descname"><span class="pre">labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#contingency_space.confusion_matrix.ConfusionMatrix.labels" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the true and predicted labels in the form of a tuple.</p>
+<p>Extracts and returns the true and predicted labels from the confusion matrix.
+The method iterates over the confusion matrix stored in <cite>self.table</cite>, where the keys are the actual labels and the values are lists of counts corresponding to predicted labels. It constructs two lists: one for the true labels and one for the predicted labels, by repeating each label according to its count in the confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple containing two lists: the first list contains the true labels, and the second list contains the predicted labels.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[list[int], list[int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.confusion_matrix.ConfusionMatrix.normalize">
+<span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#contingency_space.confusion_matrix.ConfusionMatrix.normalize" title="Link to this definition">¶</a></dt>
+<dd><p>Normalizes all entries of the confusion matrix:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>              <span class="p">(</span><span class="n">pred</span><span class="p">)</span>                           <span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+            <span class="n">a</span>   <span class="n">b</span>   <span class="n">c</span>                        <span class="n">a</span>   <span class="n">b</span>   <span class="n">c</span>
+          <span class="n">____________</span>                      <span class="n">____________</span>
+       <span class="n">a</span>  <span class="o">|</span> <span class="mi">30</span>  <span class="mi">60</span>  <span class="mi">10</span>      <span class="o">=&gt;</span>          <span class="n">a</span>  <span class="o">|</span><span class="mf">0.3</span> <span class="mf">0.6</span> <span class="mf">0.1</span>
+<span class="p">(</span><span class="n">real</span><span class="p">)</span> <span class="n">b</span>  <span class="o">|</span> <span class="mi">60</span>  <span class="mi">20</span>  <span class="mi">20</span>      <span class="o">=&gt;</span>   <span class="p">(</span><span class="n">real</span><span class="p">)</span> <span class="n">b</span>  <span class="o">|</span><span class="mf">0.6</span> <span class="mf">0.2</span> <span class="mf">0.2</span>
+       <span class="n">c</span>  <span class="o">|</span> <span class="mi">30</span>  <span class="mi">20</span>  <span class="mi">50</span>      <span class="o">=&gt;</span>          <span class="n">c</span>  <span class="o">|</span><span class="mf">0.3</span> <span class="mf">0.2</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.confusion_matrix.ConfusionMatrix.num_samples">
+<span class="sig-name descname"><span class="pre">num_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contingency_space.confusion_matrix.ConfusionMatrix.num_samples" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the total number of samples in the matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>per_class</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to return the number of samples per class. Defaults to False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.confusion_matrix.ConfusionMatrix.vector">
+<span class="sig-name descname"><span class="pre">vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">return_type:</span> <span class="pre">tuple</span> <span class="pre">|</span> <span class="pre">list</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'tuple'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric:</span> <span class="pre">~typing.Callable[[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">float]</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#contingency_space.confusion_matrix.ConfusionMatrix.vector" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a tuple representing the position of the confusion matrix within a contingency space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>return_type</strong> (<em>tuple</em><em> | </em><em>list</em>) – The type of structure you wish the point to be returned as. Defaults to tuple.</p></li>
+<li><p><strong>metric</strong> – (Callable[[ConfusionMatrix], float]):
+A function that takes in a ConfusionMatrix, and returns a float representing an evaluation score for the metric.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The tuple taking the form (x1, x2, …, xk), where k is the number of classes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>c (tuple[int, …] | list[int])</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-contingency_space.cm_generator">
+<dt class="sig sig-object py" id="contingency_space.cm_generator.CMGenerator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">contingency_space.cm_generator.</span></span><span class="sig-name descname"><span class="pre">CMGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instances_per_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contingency_space.cm_generator.CMGenerator" title="Link to this definition">¶</a></dt>
+<dd><p>Object that generates a set of confusion matrices.</p>
+<p>Constructed given a number of classes and the number of instances of each class.</p>
+<p>Object will generate a series when generate_cms() is called.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.cm_generator.CMGenerator.generate_cms">
+<span class="sig-name descname"><span class="pre">generate_cms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">granularity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#contingency_space.confusion_matrix.ConfusionMatrix" title="contingency_space.confusion_matrix.ConfusionMatrix"><span class="pre">ConfusionMatrix</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#contingency_space.cm_generator.CMGenerator.generate_cms" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a series of confusion matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>granularity</strong> (<em>int</em>) – The number of values you wish to have on each axis.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The matrices generated. These can also by accessed by calling show_all_cms().</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(list[<a class="reference internal" href="#contingency_space.confusion_matrix.ConfusionMatrix" title="contingency_space.confusion_matrix.ConfusionMatrix">ConfusionMatrix</a>])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="contingency_space.cm_generator.CMGenerator.show_all_cms">
+<span class="sig-name descname"><span class="pre">show_all_cms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contingency_space.cm_generator.CMGenerator.show_all_cms" title="Link to this definition">¶</a></dt>
+<dd><p>Prints all the confusion matrices generated by the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>limit</strong> (<em>int</em>) – The number of matrices you wish to print. If None, all matrices are printed</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function" id="module-contingency_space.imbalance_sensitivity">
+<dt class="sig sig-object py" id="contingency_space.imbalance_sensitivity.imbalance_sensitivity">
+<span class="sig-prename descclassname"><span class="pre">contingency_space.imbalance_sensitivity.</span></span><span class="sig-name descname"><span class="pre">imbalance_sensitivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imbalance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#contingency_space.confusion_matrix.ConfusionMatrix" title="contingency_space.confusion_matrix.ConfusionMatrix"><span class="pre">ConfusionMatrix</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">granularity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">15</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#contingency_space.imbalance_sensitivity.imbalance_sensitivity" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the sensitivity of a given metric to a given imbalance ratio. Only works for binary
+classification problems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>imbalance</strong> (<em>float</em><em> | </em><em>int</em>) – An integer representing the larger half of the imbalance ratio, or float containing the numerator and denominator</p></li>
+<li><p><strong>metric</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#contingency_space.confusion_matrix.ConfusionMatrix" title="contingency_space.confusion_matrix.ConfusionMatrix"><em>ConfusionMatrix</em></a><em>]</em><em>, </em><em>float</em><em>]</em>) – A function that calculates a metric given a Confusion Matrix. Should return a float.</p></li>
+<li><p><strong>granularity</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of points along each axis to generate confusion matrices from. Defaults to 15.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A value representing the sensitivity of the given metric to the imbalance ratio.
+The range may vary depending on the metric function passed.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – An error occurred while attempting to process the ratio passed.</p></li>
+<li><p><strong>TypeError</strong> – The type of input passed is not valid.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <div class="toctree-wrapper compound">
 </div>
 </section>

@@ -6,6 +6,10 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../src/'))
+
 project = 'Contingency Space'
 copyright = '2025, Colin Kehoe, Azim Ahmadzadeh'
 author = 'Colin Kehoe, Azim Ahmadzadeh'
@@ -16,6 +20,7 @@ release = '0.1.9'
 
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
 ]
 
 templates_path = ['_templates']

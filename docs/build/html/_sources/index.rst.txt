@@ -3,13 +3,20 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Contingency Space documentation
+Contingency Space
 ===============================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+.. automodule:: contingency_space.contingency_space
+   :members:
 
+.. automodule:: contingency_space.confusion_matrix
+   :members:
+
+.. automodule:: contingency_space.cm_generator
+   :members:
+
+.. automodule:: contingency_space.imbalance_sensitivity
+   :members:
 
 .. toctree::
    :maxdepth: 2
