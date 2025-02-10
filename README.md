@@ -39,6 +39,6 @@ requires the data of the learning paths. The data is pickled and
   
 
 ### Metadata.
-* Python 3.8
+* Python 3.12.5
 * Tested on Ubuntu 20.04.2 LTS
 * Utilized libraries are listed in [./requirements.txt](./requirements.txt).
