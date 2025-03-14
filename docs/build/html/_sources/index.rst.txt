@@ -6,6 +6,10 @@
 Contingency Space
 ===============================
 
+.. toctree::
+   :maxdepth: 4
+   :caption: Contents:
+
 .. automodule:: contingency_space.contingency_space
    :members:
 
@@ -18,7 +22,7 @@ Contingency Space
 .. automodule:: contingency_space.imbalance_sensitivity
    :members:
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
 
